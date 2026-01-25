@@ -1,5 +1,4 @@
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
 @theme {
   --color-main: #4385f5;
@@ -9,16 +8,10 @@
 }
 @layer base {
   :root {
-    --color-main: #4385f5;
+    --color-main: #2b7fff;
     --color-background: #fefdfa;
     --color-foreground: #1a1a1a;
     --color-sub-bg: #ebebeb;
-  }
-  .dark {
-    --color-main: #4385f5;
-    --color-background: #262627;
-    --color-foreground: #f0f0f0;
-    --color-sub-bg: #141412;
   }
 }
 
