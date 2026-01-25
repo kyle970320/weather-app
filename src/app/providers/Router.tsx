@@ -1,8 +1,11 @@
 import Layout from "@/app/Layout";
 import { useMemo } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider as ReactRouterProvider,
+} from "react-router-dom";
 
-export const Router = () => {
+export default function RouterProvider() {
   const router = useMemo(() => {
     return createBrowserRouter([
       {
@@ -19,5 +22,5 @@ export const Router = () => {
     ]);
   }, []);
 
-  return <RouterProvider router={router} />;
-};
+  return <ReactRouterProvider router={router} />;
+}

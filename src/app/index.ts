@@ -1,2 +1,3 @@
 export { default as App } from "./App";
-export { Providers } from "./providers";
+export { default as QueryClientProvider } from "./providers/QueryClient";
+export { default as RouterProvider } from "./providers/Router";
