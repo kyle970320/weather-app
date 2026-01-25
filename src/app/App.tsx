@@ -1,5 +1,5 @@
-import QueryClientProvider from "@/app/providers/QueryClient";
-import RouterProvider from "@/app/providers/Router";
+import QueryClientProvider from "@/app/providers/QueryClientProvider";
+import RouterProvider from "@/app/providers/RouterProvider";
 
 function App() {
   return (
