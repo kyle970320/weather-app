@@ -2,28 +2,34 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import koreaDistricts from "@/shared/config/koreaDistricts.json";
 import { composingIncludes } from "@/widgets/searchLocation/util/search";
 
-interface UseSearchLocationProps {
-  value: string;
-  onSearch: (value: string) => void;
-  onChange: (value: string) => void;
-}
-
-export function useSearchLocation({
-  value,
-  onSearch,
-  onChange,
-}: UseSearchLocationProps) {
+export function useSearchLocation() {
   const [isFocused, setIsFocused] = useState(false);
+  const [searchValue, setSearchValue] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const suggestions = useMemo(() => {
-    if (!value.trim()) return [];
+    if (!searchValue.trim()) return [];
 
     return (koreaDistricts as string[])
-      .filter((district) => composingIncludes(value, district))
+      .filter((district) => composingIncludes(searchValue, district))
       .sort((a, b) => a.localeCompare(b, "ko"))
       .slice(0, 5);
-  }, [value]);
+  }, [searchValue]);
+
+  const onChange = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const onSearch = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const onSearchFocus = () => {
+    setIsFocused(true);
+  };
+  const onSearchBlur = () => {
+    setIsFocused(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,7 +55,11 @@ export function useSearchLocation({
 
   return {
     isFocused,
-    setIsFocused,
+    onSearchFocus,
+    onSearchBlur,
+    searchValue,
+    onChange,
+    onSearch,
     containerRef,
     suggestions,
     handleSuggestionClick,
