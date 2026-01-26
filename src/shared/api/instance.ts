@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const kakaoApiInstance = axios.create({
-  baseURL: `https://dapi.kakao.com/v2/local/search/address`,
+  baseURL: import.meta.env.VITE_KAKAO_API_URL,
 });
 
 kakaoApiInstance.interceptors.request.use((config) => {
@@ -10,4 +10,8 @@ kakaoApiInstance.interceptors.request.use((config) => {
   config.headers.Authorization = `KakaoAK ${apiKey}`;
 
   return config;
+});
+
+export const weatherApiInstance = axios.create({
+  baseURL: import.meta.env.VITE_WEATHER_API_URL,
 });
