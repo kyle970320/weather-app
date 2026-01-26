@@ -1,9 +1,13 @@
-import { kakaoApiInstance } from "@/shared/api/instance";
+import {
+  kakaoAddressApiInstance,
+  kakaoGeoApiInstance,
+} from "@/shared/api/instance";
 import type {
   KakaoLocationSearchResponse,
   SearchLocationParams,
   Location,
   KakaoLocationDocument,
+  GetLocationWithCoordinatesParams,
 } from "../types";
 
 const convertLocationDocument = (doc: KakaoLocationDocument): Location => {
@@ -20,18 +24,38 @@ const convertLocationDocument = (doc: KakaoLocationDocument): Location => {
     buildingName: doc.road_address?.building_name,
   };
 };
-export const getSearchLocation = async (
+export const getLocationWithAddress = async (
   params: SearchLocationParams,
 ): Promise<Location[]> => {
   const { query, page = 1, size = 10 } = params;
 
-  const response = await kakaoApiInstance.get<KakaoLocationSearchResponse>("", {
-    params: {
-      query,
-      page,
-      size,
-    },
-  });
+  const response =
+    await kakaoAddressApiInstance.get<KakaoLocationSearchResponse>("", {
+      params: {
+        query,
+        page,
+        size,
+      },
+    });
 
+  return response.data.documents.map(convertLocationDocument);
+};
+
+export const getLocationWithCoordinates = async (
+  params: GetLocationWithCoordinatesParams,
+): Promise<Location[]> => {
+  const { latitude, longitude, page = 1, size = 10 } = params;
+
+  const response = await kakaoGeoApiInstance.get<KakaoLocationSearchResponse>(
+    "",
+    {
+      params: {
+        latitude,
+        longitude,
+        page,
+        size,
+      },
+    },
+  );
   return response.data.documents.map(convertLocationDocument);
 };

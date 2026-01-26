@@ -49,6 +49,14 @@ export interface SearchLocationParams {
   enabled?: boolean;
 }
 
+export interface GetLocationWithCoordinatesParams {
+  latitude: number;
+  longitude: number;
+  page?: number;
+  size?: number;
+  enabled?: boolean;
+}
+
 export interface Location {
   id: string;
   addressName: string;
