@@ -1,10 +1,18 @@
-import { useHomePage } from "../model/useHomePage";
+import { useOutletContext } from "react-router-dom";
 import Card from "@/shared/ui/Card";
+import type { WeatherData } from "@/entity/weather";
+import type { Location } from "@/entity/location";
 
 export default function HomePage() {
-  const { weatherData, selectedLocation, isLoading, error } = useHomePage();
+  const { weatherData, selectedLocation, isWeatherLoading, weatherError } =
+    useOutletContext<{
+      weatherData: WeatherData;
+      selectedLocation: Location;
+      isWeatherLoading: boolean;
+      weatherError: Error;
+    }>();
 
-  if (isLoading) {
+  if (isWeatherLoading) {
     return (
       <div className="mt-8">
         <Card>
@@ -14,12 +22,12 @@ export default function HomePage() {
     );
   }
 
-  if (error) {
+  if (weatherError) {
     return (
       <div className="mt-8">
         <Card>
           <div className="text-center py-8 text-red-300">
-            오류가 발생했습니다: {error.message}
+            오류가 발생했습니다: {weatherError.message}
           </div>
         </Card>
       </div>
@@ -43,7 +51,9 @@ export default function HomePage() {
       {/* 현재 날씨 정보 */}
       <Card>
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold">{selectedLocation.addressName}</h2>
+          <h2 className="text-2xl font-bold">
+            {selectedLocation?.addressName}
+          </h2>
 
           <div className="flex items-center justify-between">
             <div>
@@ -59,11 +69,10 @@ export default function HomePage() {
         </div>
       </Card>
 
-      {/* 시간대별 기온 */}
       {weatherData.hourlyTemperatures.length > 0 && (
         <Card>
           <h3 className="text-xl font-semibold mb-4">시간대별 기온</h3>
-          <div className="grid grid-cols-4 md:grid-cols-8 gap-4">
+          <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
             {weatherData.hourlyTemperatures.map((hourly, index) => (
               <div key={index} className="text-center">
                 <div className="text-sm opacity-80">{hourly.time}시</div>
