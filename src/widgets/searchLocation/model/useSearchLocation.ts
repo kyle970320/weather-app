@@ -1,27 +1,53 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useSearchLocationFeature } from "@/feature/searchLocation";
 import koreaDistricts from "@/shared/config/koreaDistricts.json";
 import { composingIncludes } from "@/widgets/searchLocation/util/search";
 
 export function useSearchLocation() {
   const [isFocused, setIsFocused] = useState(false);
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
+  const [addressQuery, setAddressQuery] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      setDebouncedQuery(inputValue);
+    }, 700);
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [inputValue]);
+
+  const { isLoading, error, handleSearchLocation } = useSearchLocationFeature({
+    query: addressQuery,
+    localSearchLimit: 5,
+  });
 
   const suggestions = useMemo(() => {
-    if (!searchValue.trim()) return [];
+    if (!debouncedQuery.trim()) return [];
 
     return (koreaDistricts as string[])
-      .filter((district) => composingIncludes(searchValue, district))
+      .filter((district) => composingIncludes(debouncedQuery, district))
       .sort((a, b) => a.localeCompare(b, "ko"))
       .slice(0, 5);
-  }, [searchValue]);
+  }, [debouncedQuery]);
 
   const onChange = (value: string) => {
-    setSearchValue(value);
+    setInputValue(value);
   };
 
   const onSearch = (value: string) => {
-    setSearchValue(value);
+    setInputValue(value);
+    setDebouncedQuery(value);
   };
 
   const onSearchFocus = () => {
@@ -30,6 +56,13 @@ export function useSearchLocation() {
   const onSearchBlur = () => {
     setIsFocused(false);
   };
+
+  useEffect(() => {
+    if (!addressQuery.trim()) {
+      return;
+    }
+    handleSearchLocation();
+  }, [addressQuery]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,17 +84,20 @@ export function useSearchLocation() {
     onChange(suggestion);
     onSearch(suggestion);
     setIsFocused(false);
+    setAddressQuery(suggestion);
   };
 
   return {
     isFocused,
     onSearchFocus,
     onSearchBlur,
-    searchValue,
+    searchValue: inputValue,
     onChange,
     onSearch,
     containerRef,
     suggestions,
     handleSuggestionClick,
+    isLoading,
+    error,
   };
 }

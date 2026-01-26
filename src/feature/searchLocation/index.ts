@@ -1,0 +1,1 @@
+export { useSearchLocationFeature } from "./model";

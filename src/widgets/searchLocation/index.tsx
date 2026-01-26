@@ -37,7 +37,7 @@ export default function SearchLocation({
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full flex flex-col", className)}
+      className={cn("relative w-full flex flex-col rounded-md", className)}
     >
       <SearchInput
         placeholder={placeholder}

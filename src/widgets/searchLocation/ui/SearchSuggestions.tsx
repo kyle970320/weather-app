@@ -22,7 +22,7 @@ export function SearchSuggestions({
     return (
       <div
         className={cn(
-          "absolute top-full left-0 right-0 mt-1 bg-background border border-sub-bg rounded-md shadow-lg z-50 max-h-60 overflow-y-auto cursor-pointer",
+          "absolute top-full left-0 right-0 mt-1 bg-background rounded-md shadow-lg z-50 max-h-60 overflow-y-auto cursor-pointer",
           className,
         )}
       >
@@ -43,7 +43,7 @@ export function SearchSuggestions({
   return (
     <div
       className={cn(
-        "absolute top-full left-0 right-0 mt-1 bg-background border border-sub-bg rounded-md shadow-lg z-50 max-h-60 overflow-y-auto cursor-pointer",
+        "absolute top-full left-0 right-0 mt-1 bg-background rounded-md shadow-lg z-50 max-h-60 overflow-y-auto cursor-pointer",
         className,
       )}
     >

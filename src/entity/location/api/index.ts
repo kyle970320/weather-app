@@ -1,0 +1,1 @@
+export { getSearchLocation } from "./locationApi";

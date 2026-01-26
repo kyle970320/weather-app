@@ -1,0 +1,1 @@
+export { useSearchLocationQuery } from "./useSearchLocationQuery";
