@@ -1,4 +1,5 @@
 import Layout from "@/app/Layout";
+import HomePage from "@/page/home";
 import {
   createBrowserRouter,
   RouterProvider as ReactRouterProvider,
@@ -11,8 +12,12 @@ const router = createBrowserRouter([
     errorElement: <></>,
     children: [
       {
+        index: true,
+        element: <HomePage />,
+      },
+      {
         path: "/:address",
-        element: <>123</>,
+        element: <HomePage />,
       },
     ],
   },

@@ -38,6 +38,7 @@ export const useWeatherFeature = ({ apiResults }: Props) => {
   });
   return {
     data,
+    selectedLocation,
     isLoading,
     error,
   };

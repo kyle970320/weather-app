@@ -1,5 +1,5 @@
 import { type KeyboardEvent, type ChangeEvent } from "react";
-import { Input } from "@/shared/ui/input";
+import { Input } from "@/shared/ui/Input";
 import { Search } from "lucide-react";
 
 interface SearchInputProps {
