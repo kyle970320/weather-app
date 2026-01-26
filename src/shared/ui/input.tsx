@@ -43,7 +43,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <p className="text-foreground text-sm font-medium">{label}</p>
         )}
-        <div className="group relative flex items-center px-2 py-1.5 has-focus:outline-2 has-focus:outline-offset-2 has-focus:outline-blue-500 rounded-sm">
+        <div className="group relative flex items-center px-2 py-1.5 rounded-md">
           {leftIcon && <div className="text-foreground">{leftIcon}</div>}
           <input
             id={inputId}
