@@ -43,6 +43,7 @@ export function useSearchLocation() {
     data: weatherData,
     isLoading: isWeatherLoading,
     error: weatherError,
+    selectedLocation,
   } = useWeatherFeature({ apiResults });
 
   const suggestions = useMemo(() => {
@@ -112,6 +113,7 @@ export function useSearchLocation() {
     handleSuggestionClick,
     isLocationLoading,
     locationError,
+    selectedLocation,
     weatherData,
     isWeatherLoading,
     weatherError,

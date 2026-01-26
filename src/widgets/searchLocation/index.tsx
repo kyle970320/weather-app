@@ -1,29 +1,30 @@
-import { type KeyboardEvent, type ChangeEvent } from "react";
+import { type KeyboardEvent, type ChangeEvent, type RefObject } from "react";
 import { cn } from "@/shared/lib/variants";
-import { useSearchLocation } from "./model/useSearchLocation";
 import { SearchInput, SearchSuggestions } from "./ui";
 
 interface SearchLocationProps {
   placeholder?: string;
   className?: string;
+  isFocused: boolean;
+  onSearchFocus: () => void;
+  searchValue: string;
+  onChange: (value: string) => void;
+  containerRef: RefObject<HTMLDivElement>;
+  suggestions: string[];
+  handleSuggestionClick: (suggestion: string) => void;
 }
 
 export default function SearchLocation({
   placeholder = "검색어를 입력하세요",
   className,
+  isFocused,
+  onSearchFocus,
+  searchValue,
+  onChange,
+  containerRef,
+  suggestions,
+  handleSuggestionClick,
 }: SearchLocationProps) {
-  const {
-    isFocused,
-    onSearchFocus,
-    // onSearchBlur,
-    searchValue,
-    onChange,
-    // onSearch,
-    containerRef,
-    suggestions,
-    handleSuggestionClick,
-  } = useSearchLocation();
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -37,7 +38,7 @@ export default function SearchLocation({
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full flex flex-col rounded-md", className)}
+      className={cn("relative z-1 w-full flex flex-col rounded-md", className)}
     >
       <SearchInput
         placeholder={placeholder}
