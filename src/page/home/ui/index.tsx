@@ -2,6 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import Card from "@/shared/ui/Card";
 import type { WeatherData } from "@/entity/weather";
 import type { Location } from "@/entity/location";
+// import useGetHome from "../model/useGetHome";
 
 export default function HomePage() {
   const { weatherData, selectedLocation, isWeatherLoading, weatherError } =
@@ -11,7 +12,7 @@ export default function HomePage() {
       isWeatherLoading: boolean;
       weatherError: Error;
     }>();
-
+  // const { latitude, longitude, addressName } = useGetHome();
   if (isWeatherLoading) {
     return (
       <div className="mt-8">
