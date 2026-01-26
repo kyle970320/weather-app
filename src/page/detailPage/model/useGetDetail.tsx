@@ -11,12 +11,16 @@ export const useGetDetail = () => {
     localSearchLimit: 5,
   });
 
+  const selectedLocation = apiResults?.[0] ?? null;
+
   const {
     data: weatherData,
     isLoading: isWeatherLoading,
     error: weatherError,
-    selectedLocation,
-  } = useWeatherFeature({ apiResults });
+  } = useWeatherFeature({
+    latitude: selectedLocation?.latitude ?? null,
+    longitude: selectedLocation?.longitude ?? null,
+  });
 
   //새로고침 or url 공유 대응
   useEffect(() => {

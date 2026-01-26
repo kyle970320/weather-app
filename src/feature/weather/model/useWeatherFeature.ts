@@ -1,30 +1,20 @@
 import { getCurrentBaseDateTime, useWeatherQuery } from "@/entity/weather";
 import { convertToGridCoordinates } from "@/shared/utils/coordinateUtils";
 import { useMemo } from "react";
-import type { Location } from "@/entity/location";
 
 interface Props {
-  apiResults: Location[] | undefined;
+  latitude: number | null;
+  longitude: number | null;
 }
-export const useWeatherFeature = ({ apiResults }: Props) => {
-  // 첫 번째 검색 결과에서 좌표 추출
-  const selectedLocation = useMemo<Location | null>(() => {
-    if (!apiResults || apiResults.length === 0) {
-      return null;
-    }
-    return apiResults[0];
-  }, [apiResults]);
 
+export const useWeatherFeature = ({ latitude, longitude }: Props) => {
   // 좌표를 기상청 격자 좌표로 변환
   const gridCoordinates = useMemo(() => {
-    if (!selectedLocation) {
+    if (latitude === null || longitude === null) {
       return null;
     }
-    return convertToGridCoordinates(
-      selectedLocation.longitude,
-      selectedLocation.latitude,
-    );
-  }, [selectedLocation]);
+    return convertToGridCoordinates(longitude, latitude);
+  }, [latitude, longitude]);
 
   // 날짜/시간 계산
   const { base_date, base_time } = getCurrentBaseDateTime();
@@ -36,9 +26,9 @@ export const useWeatherFeature = ({ apiResults }: Props) => {
     nx: gridCoordinates?.nx ?? 0,
     ny: gridCoordinates?.ny ?? 0,
   });
+
   return {
     data,
-    selectedLocation,
     isLoading,
     error,
   };
