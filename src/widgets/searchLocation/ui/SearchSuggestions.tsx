@@ -1,16 +1,23 @@
 import { cn } from "@/shared/lib/variants";
 
 interface SearchSuggestionsProps {
+  value: string;
+  isFocused: boolean;
   suggestions: string[];
   onSuggestionClick: (suggestion: string) => void;
   className?: string;
 }
 
 export function SearchSuggestions({
+  value,
+  isFocused,
   suggestions,
   onSuggestionClick,
   className,
 }: SearchSuggestionsProps) {
+  if (!isFocused || value.trim() === "") {
+    return null;
+  }
   if (suggestions.length > 0) {
     return (
       <div
