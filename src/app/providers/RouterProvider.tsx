@@ -1,5 +1,6 @@
-import Layout from "@/app/Layout";
+import Layout from "@/app/Layout/ui/Layout";
 import HomePage from "@/page/home";
+
 import {
   createBrowserRouter,
   RouterProvider as ReactRouterProvider,
