@@ -47,15 +47,16 @@ export const getLocationWithCoordinates = async (
   const { latitude, longitude, page = 1, size = 10 } = params;
 
   const response = await kakaoGeoApiInstance.get<KakaoLocationSearchResponse>(
-    "",
+    "/v2/local/geo/coord2address",
     {
       params: {
-        latitude,
-        longitude,
+        x: longitude, // 🔥 중요
+        y: latitude, // 🔥 중요
         page,
         size,
       },
     },
   );
+
   return response.data.documents.map(convertLocationDocument);
 };
