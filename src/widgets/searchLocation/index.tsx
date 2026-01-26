@@ -1,4 +1,4 @@
-import { type KeyboardEvent, type ChangeEvent, type RefObject } from "react";
+import { type KeyboardEvent, type ChangeEvent, useRef } from "react";
 import { cn } from "@/shared/lib/variants";
 import { SearchInput, SearchSuggestions } from "./ui";
 
@@ -9,7 +9,6 @@ interface SearchLocationProps {
   onSearchFocus: () => void;
   searchValue: string;
   onChange: (value: string) => void;
-  containerRef: RefObject<HTMLDivElement>;
   suggestions: string[];
   handleSuggestionClick: (suggestion: string) => void;
 }
@@ -21,10 +20,10 @@ export default function SearchLocation({
   onSearchFocus,
   searchValue,
   onChange,
-  containerRef,
   suggestions,
   handleSuggestionClick,
 }: SearchLocationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
