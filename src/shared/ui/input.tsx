@@ -52,6 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             ref={ref}
             onChange={handleChange}
+            autoComplete="off"
             {...props}
           />
           {rightIcon && <div className="text-foregroun">{rightIcon}</div>}
