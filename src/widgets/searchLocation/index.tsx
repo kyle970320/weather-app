@@ -10,6 +10,7 @@ interface SearchLocationProps {
   searchValue: string;
   onChange: (value: string) => void;
   suggestions: string[];
+  onSearchClick: () => void;
   handleSuggestionClick: (suggestion: string) => void;
 }
 
@@ -22,6 +23,7 @@ export default function SearchLocation({
   onChange,
   suggestions,
   handleSuggestionClick,
+  onSearchClick,
 }: SearchLocationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +47,7 @@ export default function SearchLocation({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onFocus={onSearchFocus}
-        onSearchClick={() => {}}
+        onSearchClick={onSearchClick}
       />
 
       <SearchSuggestions

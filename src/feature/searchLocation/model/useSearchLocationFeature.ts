@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useSearchLocationQuery } from "@/entity/location";
 import type { UseSearchLocationOptions } from "../types";
 
@@ -6,7 +7,13 @@ import type { UseSearchLocationOptions } from "../types";
  * 리스트에서 선택 or enter 검색 시 refetch 실행
  */
 export const useSearchLocationFeature = (options: UseSearchLocationOptions) => {
-  const { query } = options;
+  const { query: initialQuery } = options;
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
+
+  // initialQuery가 변경되면 searchQuery도 업데이트
+  useEffect(() => {
+    setSearchQuery(initialQuery);
+  }, [initialQuery]);
 
   const {
     data: apiResults,
@@ -14,22 +21,26 @@ export const useSearchLocationFeature = (options: UseSearchLocationOptions) => {
     error,
     refetch,
   } = useSearchLocationQuery({
-    query: query.trim(),
+    query: searchQuery.trim(),
     page: 1,
     size: 10,
     enabled: false,
   });
 
-  const handleSearchLocation = () => {
-    if (!query.trim()) {
+  const handleSearchLocation = (query?: string) => {
+    const queryToSearch = query ?? searchQuery;
+    if (!queryToSearch.trim()) {
       return;
     }
-    refetch();
+    setSearchQuery(queryToSearch);
+    setTimeout(() => {
+      refetch();
+    }, 0);
   };
-  const isEmpty = !query.trim();
+  const isEmpty = !searchQuery.trim();
 
   return {
-    query,
+    query: searchQuery,
     apiResults,
     isLoading,
     error: error as Error | null,
