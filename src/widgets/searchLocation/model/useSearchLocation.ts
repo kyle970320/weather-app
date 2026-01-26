@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useSearchLocationFeature } from "@/feature/searchLocation";
 import koreaDistricts from "@/shared/config/koreaDistricts.json";
-import { composingIncludes } from "@/widgets/searchLocation/util/search";
+import { composingIncludes } from "@/widgets/searchLocation/utils/search";
+import { useWeatherFeature } from "@/feature/weather/model";
 
 export function useSearchLocation() {
   const [isFocused, setIsFocused] = useState(false);
@@ -27,10 +28,22 @@ export function useSearchLocation() {
     };
   }, [inputValue]);
 
-  const { isLoading, error, handleSearchLocation } = useSearchLocationFeature({
+  const {
+    apiResults,
+    isLoading: isLocationLoading,
+    error: locationError,
+    handleSearchLocation,
+  } = useSearchLocationFeature({
     query: addressQuery,
     localSearchLimit: 5,
   });
+
+  // 날씨 쿼리
+  const {
+    data: weatherData,
+    isLoading: isWeatherLoading,
+    error: weatherError,
+  } = useWeatherFeature({ apiResults });
 
   const suggestions = useMemo(() => {
     if (!debouncedQuery.trim()) return [];
@@ -97,7 +110,12 @@ export function useSearchLocation() {
     containerRef,
     suggestions,
     handleSuggestionClick,
-    isLoading,
-    error,
+    isLocationLoading,
+    locationError,
+    weatherData,
+    isWeatherLoading,
+    weatherError,
+    isLoading: isLocationLoading || isWeatherLoading,
+    error: locationError || weatherError,
   };
 }
