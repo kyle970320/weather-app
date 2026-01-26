@@ -1,14 +1,13 @@
 import { useSearchLocationFeature } from "@/feature/searchLocation";
 import { useWeatherFeature } from "@/feature/weather/model";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-export const useLayout = () => {
-  const [search, setSearch] = useState("");
-  const onChangeSearch = (value: string) => {
-    setSearch(value);
-  };
+export const useGetDetail = () => {
+  const { address } = useParams();
+
   const { apiResults, handleSearchLocation } = useSearchLocationFeature({
-    query: search,
+    query: address as string,
     localSearchLimit: 5,
   });
 
@@ -19,11 +18,12 @@ export const useLayout = () => {
     selectedLocation,
   } = useWeatherFeature({ apiResults });
 
+  //새로고침 or url 공유 대응
+  useEffect(() => {
+    handleSearchLocation(address as string);
+  }, [address]);
+
   return {
-    search,
-    onChangeSearch,
-    apiResults,
-    handleSearchLocation,
     weatherData,
     isWeatherLoading,
     weatherError,
