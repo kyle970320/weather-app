@@ -1,14 +1,14 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import { useSearchLocationFeature } from "@/feature/searchLocation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import koreaDistricts from "@/shared/config/koreaDistricts.json";
 import { composingIncludes } from "@/widgets/searchLocation/utils/search";
-import { useWeatherFeature } from "@/feature/weather/model";
 
-export function useSearchLocation() {
+interface Props {
+  search: string;
+  onChangeSearch: (value: string) => void;
+}
+export const useSearchModel = ({ search, onChangeSearch }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useState<string>("");
-  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
-  const [addressQuery, setAddressQuery] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -16,52 +16,23 @@ export function useSearchLocation() {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-
     debounceTimerRef.current = setTimeout(() => {
-      setDebouncedQuery(inputValue);
+      setDebouncedSearch(search);
     }, 700);
-
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [inputValue]);
-
-  const {
-    apiResults,
-    isLoading: isLocationLoading,
-    error: locationError,
-    handleSearchLocation,
-  } = useSearchLocationFeature({
-    query: addressQuery,
-    localSearchLimit: 5,
-  });
-
-  // 날씨 쿼리
-  const {
-    data: weatherData,
-    isLoading: isWeatherLoading,
-    error: weatherError,
-    selectedLocation,
-  } = useWeatherFeature({ apiResults });
-
-  const suggestions = useMemo(() => {
-    if (!debouncedQuery.trim()) return [];
-
-    return (koreaDistricts as string[])
-      .filter((district) => composingIncludes(debouncedQuery, district))
-      .sort((a, b) => a.localeCompare(b, "ko"))
-      .slice(0, 5);
-  }, [debouncedQuery]);
+  }, [search]);
 
   const onChange = (value: string) => {
-    setInputValue(value);
+    onChangeSearch(value);
   };
 
   const onSearch = (value: string) => {
-    setInputValue(value);
-    setDebouncedQuery(value);
+    onChangeSearch(value);
+    setDebouncedSearch(value);
   };
 
   const onSearchFocus = () => {
@@ -70,13 +41,20 @@ export function useSearchLocation() {
   const onSearchBlur = () => {
     setIsFocused(false);
   };
+  const handleSuggestionClick = (suggestion: string) => {
+    onChange(suggestion);
+    onSearch(suggestion);
+    setIsFocused(false);
+  };
 
-  useEffect(() => {
-    if (!addressQuery.trim()) {
-      return;
-    }
-    handleSearchLocation();
-  }, [addressQuery]);
+  const suggestions = useMemo(() => {
+    if (!debouncedSearch.trim()) return [];
+
+    return (koreaDistricts as string[])
+      .filter((district) => composingIncludes(debouncedSearch, district))
+      .sort((a, b) => a.localeCompare(b, "ko"))
+      .slice(0, 5);
+  }, [debouncedSearch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -94,30 +72,13 @@ export function useSearchLocation() {
     };
   }, []);
 
-  const handleSuggestionClick = (suggestion: string) => {
-    onChange(suggestion);
-    onSearch(suggestion);
-    setIsFocused(false);
-    setAddressQuery(suggestion);
-  };
-
   return {
+    search,
+    debouncedSearch,
     isFocused,
+    suggestions,
     onSearchFocus,
     onSearchBlur,
-    searchValue: inputValue,
-    onChange,
-    onSearch,
-    containerRef,
-    suggestions,
     handleSuggestionClick,
-    isLocationLoading,
-    locationError,
-    selectedLocation,
-    weatherData,
-    isWeatherLoading,
-    weatherError,
-    isLoading: isLocationLoading || isWeatherLoading,
-    error: locationError || weatherError,
   };
-}
+};
