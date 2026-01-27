@@ -27,7 +27,7 @@ export default function DetailPage() {
     );
   }
 
-  if (!weatherData) {
+  if (!weatherData || !selectedLocation) {
     return (
       <div className="mt-8">
         <Card>
