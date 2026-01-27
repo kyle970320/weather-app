@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLocationWithAddress } from "../api";
-import type { SearchLocationParams } from "../types";
+import { getAddress } from "../api";
+import type { KakaoAddressParams } from "../types";
 
-export const useSearchLocationQuery = (params: SearchLocationParams) => {
+export const useGetAddressQuery = (params: KakaoAddressParams) => {
   const { query, page, size, enabled = true } = params;
   return useQuery({
     queryKey: ["address", "search", query, page, size],
-    queryFn: () => getLocationWithAddress(params),
+    queryFn: () => getAddress(params),
     enabled: enabled,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,

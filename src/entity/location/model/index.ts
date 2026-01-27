@@ -1,2 +1,2 @@
-export { useSearchLocationQuery } from "./useSearchLocationQuery";
-export { useSearchGeoQuery } from "./useSearchGeoQuery";
+export { useGetAddressQuery } from "./useGetAddressQuery";
+export { useGetGeoQuery } from "./useGetGeoQuery";
