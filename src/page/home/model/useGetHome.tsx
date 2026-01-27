@@ -1,5 +1,5 @@
-import { getLocationWithCoordinates } from "@/entity/location/api/locationApi";
-import { useWeatherFeature } from "@/feature/weather/model";
+import { getGeo } from "@/entity/location";
+import { useSearchWeather } from "@/feature/weather";
 import { getCurrentLocation } from "@/shared/utils/currentLocation";
 import { useEffect, useState } from "react";
 
@@ -20,7 +20,7 @@ export default function useGetHome() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        const address = await getLocationWithCoordinates({
+        const address = await getGeo({
           latitude,
           longitude,
         });
@@ -41,7 +41,7 @@ export default function useGetHome() {
   }, []);
   console.log(location);
 
-  const { data: weatherData } = useWeatherFeature({
+  const { data: weatherData } = useSearchWeather({
     latitude: location?.latitude ?? null,
     longitude: location?.longitude ?? null,
   });
