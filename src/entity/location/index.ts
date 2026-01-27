@@ -1,9 +1,10 @@
-export { useSearchLocationQuery } from "./model";
+export { useGetAddressQuery } from "./model/useGetAddressQuery";
+export { useGetGeoQuery } from "./model/useGetGeoQuery";
 export type {
   Location,
-  SearchLocationParams,
-  GetLocationWithCoordinatesParams,
-  KakaoLocationDocument,
-  KakaoLocationSearchResponse,
+  KakaoAddressParams,
+  KakaoGeoParams,
+  KakaoAddressDocument,
+  KakaoAddressResponse,
 } from "./types";
-export { getLocationWithAddress } from "./api";
+export { getAddress, getGeo } from "./api";
