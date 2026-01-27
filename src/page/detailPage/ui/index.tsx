@@ -1,6 +1,7 @@
 import Card from "@/shared/ui/Card";
 import { useGetDetail } from "../model/useGetDetail";
 import { Droplets, Wind, CloudRain } from "lucide-react";
+import { WeatherSkeleton } from "@/widgets/weather/ui";
 export default function DetailPage() {
   const {
     weatherData,
@@ -11,13 +12,7 @@ export default function DetailPage() {
   } = useGetDetail();
 
   if (isWeatherLoading) {
-    return (
-      <div className="mt-8">
-        <Card>
-          <div className="text-center py-8">날씨 정보를 불러오는 중...</div>
-        </Card>
-      </div>
-    );
+    return <WeatherSkeleton />;
   }
 
   if (weatherError) {
@@ -37,7 +32,7 @@ export default function DetailPage() {
       <div className="mt-8">
         <Card>
           <div className="text-center py-8">
-            위치를 검색하여 날씨 정보를 확인하세요
+            해당 장소의 정보가 제공되지 않습니다.
           </div>
         </Card>
       </div>

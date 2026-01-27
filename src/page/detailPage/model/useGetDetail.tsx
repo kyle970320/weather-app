@@ -19,6 +19,7 @@ export const useGetDetail = () => {
   } = useSearchWeather({
     latitude: selectedLocation?.latitude ?? null,
     longitude: selectedLocation?.longitude ?? null,
+    enabled: !!selectedLocation,
   });
 
   //새로고침 or url 공유 대응

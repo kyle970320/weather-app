@@ -66,6 +66,7 @@ export default function useGetHome() {
   const { data: weatherData } = useSearchWeather({
     latitude: location?.latitude ?? null,
     longitude: location?.longitude ?? null,
+    enabled: !!location,
   });
 
   return {
