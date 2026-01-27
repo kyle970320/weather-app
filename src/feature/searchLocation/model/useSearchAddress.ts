@@ -26,7 +26,7 @@ export const useSearchAddress = (options: KakaoAddressParams) => {
     enabled: false,
   });
 
-  const handleSearchLocation = (query?: string) => {
+  const onSearchLoctaion = (query?: string) => {
     const queryToSearch = query ?? searchQuery;
     if (!queryToSearch.trim()) {
       return;
@@ -44,6 +44,6 @@ export const useSearchAddress = (options: KakaoAddressParams) => {
     isLoading,
     error: error as Error | null,
     isEmpty,
-    handleSearchLocation,
+    onSearchLoctaion,
   };
 };

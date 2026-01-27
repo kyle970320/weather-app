@@ -5,34 +5,36 @@ import { useSearchModel } from "@/widgets/searchLocation/model/useSearchLocation
 import { useEffect } from "react";
 
 export default function Layout() {
-  const { search, onChangeSearch, handleSearchLocation } = useLayout();
+  const { search, onChangeSearch, onSearchLoctaion } = useLayout();
 
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
 
   const {
+    containerRef,
     isFocused,
     onSearchFocus,
     suggestions,
-    handleSuggestionClick: originalHandleSuggestionClick,
+    onSuggestionClick: originalonSuggestionClick,
   } = useSearchModel({ search, onChangeSearch });
 
   //즉시 캐시에 담아서 router시 부드럽게 보여줌
   const handleSuggestionClick = (suggestion: string) => {
-    originalHandleSuggestionClick(suggestion);
-    handleSearchLocation(suggestion);
+    originalonSuggestionClick(suggestion);
+    onSearchLoctaion(suggestion);
     navigate(`/${encodeURIComponent(suggestion)}`);
   };
 
-  const onCustomSearchFocus = () => {
+  const handleSearchFocus = () => {
     onChangeSearch("");
     onSearchFocus();
   };
 
-  const onSearchClick = () => {
+  const handleSearchClick = () => {
     handleSuggestionClick(search);
   };
+
   useEffect(() => {
     const currentAddress = decodeURIComponent(pathname.split("/").pop() ?? "");
     if (search !== currentAddress) {
@@ -46,13 +48,14 @@ export default function Layout() {
         <SearchLocation
           placeholder="Search"
           className="bg-sub-bg backdrop-blur-2xl shadow-lg"
+          containerRef={containerRef}
           isFocused={isFocused}
-          onSearchFocus={onCustomSearchFocus}
+          onSearchFocus={handleSearchFocus}
           searchValue={search}
           onChange={onChangeSearch}
           suggestions={suggestions}
-          handleSuggestionClick={handleSuggestionClick}
-          onSearchClick={onSearchClick}
+          onSearchClick={handleSearchClick}
+          onSuggestionClick={handleSuggestionClick}
         />
         <Outlet />
       </div>
