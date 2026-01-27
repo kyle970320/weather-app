@@ -26,11 +26,11 @@ export const useSearchModel = ({ search, onChangeSearch }: Props) => {
     };
   }, [search]);
 
-  const onChange = (value: string) => {
+  const handleChangeSearch = (value: string) => {
     onChangeSearch(value);
   };
 
-  const onSearch = (value: string) => {
+  const handleSearch = (value: string) => {
     onChangeSearch(value);
     setDebouncedSearch(value);
   };
@@ -41,9 +41,9 @@ export const useSearchModel = ({ search, onChangeSearch }: Props) => {
   const onSearchBlur = () => {
     setIsFocused(false);
   };
-  const handleSuggestionClick = (suggestion: string) => {
-    onChange(suggestion);
-    onSearch(suggestion);
+  const onSuggestionClick = (suggestion: string) => {
+    handleChangeSearch(suggestion);
+    handleSearch(suggestion);
     setIsFocused(false);
   };
 
@@ -77,8 +77,9 @@ export const useSearchModel = ({ search, onChangeSearch }: Props) => {
     debouncedSearch,
     isFocused,
     suggestions,
+    containerRef,
     onSearchFocus,
     onSearchBlur,
-    handleSuggestionClick,
+    onSuggestionClick,
   };
 };

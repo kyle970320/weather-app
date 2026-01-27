@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 export const useGetDetail = () => {
   const { address } = useParams();
 
-  const { addressesLocation, handleSearchLocation } = useSearchAddress({
+  const { addressesLocation, onSearchLoctaion } = useSearchAddress({
     query: address as string,
   });
 
@@ -24,7 +24,7 @@ export const useGetDetail = () => {
 
   //새로고침 or url 공유 대응
   useEffect(() => {
-    handleSearchLocation(address as string);
+    onSearchLoctaion(address as string);
   }, [address]);
 
   return {

@@ -1,4 +1,4 @@
-import { type KeyboardEvent, type ChangeEvent, useRef } from "react";
+import { type KeyboardEvent, type ChangeEvent } from "react";
 import { cn } from "@/shared/lib/variants";
 import { SearchInput, SearchSuggestions } from "./ui";
 
@@ -6,26 +6,27 @@ interface SearchLocationProps {
   placeholder?: string;
   className?: string;
   isFocused: boolean;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   onSearchFocus: () => void;
   searchValue: string;
   onChange: (value: string) => void;
   suggestions: string[];
   onSearchClick: () => void;
-  handleSuggestionClick: (suggestion: string) => void;
+  onSuggestionClick: (suggestion: string) => void;
 }
 
 export default function SearchLocation({
   placeholder = "검색어를 입력하세요",
   className,
+  containerRef,
   isFocused,
   onSearchFocus,
   searchValue,
   onChange,
   suggestions,
-  handleSuggestionClick,
+  onSuggestionClick,
   onSearchClick,
 }: SearchLocationProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -54,7 +55,7 @@ export default function SearchLocation({
         value={searchValue.trim()}
         isFocused={isFocused}
         suggestions={suggestions}
-        onSuggestionClick={handleSuggestionClick}
+        onSuggestionClick={onSuggestionClick}
         className={className}
       />
     </div>

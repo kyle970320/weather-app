@@ -6,7 +6,7 @@ export const useLayout = () => {
   const onChangeSearch = (value: string) => {
     setSearch(value);
   };
-  const { addressesLocation, handleSearchLocation } = useSearchAddress({
+  const { addressesLocation, onSearchLoctaion } = useSearchAddress({
     query: search,
   });
 
@@ -14,6 +14,6 @@ export const useLayout = () => {
     search,
     onChangeSearch,
     addressesLocation,
-    handleSearchLocation,
+    onSearchLoctaion,
   };
 };
