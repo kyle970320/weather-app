@@ -13,11 +13,7 @@ export const useGetWeatherQuery = (params: WeatherParams) => {
       params.ny,
     ],
     queryFn: () => getWeather(params),
-    enabled:
-      Boolean(params.base_date) &&
-      Boolean(params.base_time) &&
-      params.nx > 0 &&
-      params.ny > 0,
+    enabled: params.enabled,
     staleTime: 1000 * 60 * 30,
     gcTime: 1000 * 60 * 60,
   });

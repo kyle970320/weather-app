@@ -110,7 +110,7 @@ const convertWeatherResponse = (
         }
       });
   }
-  console.log(data);
+
   return {
     baseDate: firstItem.baseDate,
     baseTime: firstItem.baseTime,
