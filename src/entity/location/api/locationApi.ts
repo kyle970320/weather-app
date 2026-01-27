@@ -2,6 +2,7 @@ import {
   kakaoAddressApiInstance,
   kakaoGeoApiInstance,
 } from "@/shared/api/instance";
+
 import type {
   KakaoAddressResponse,
   KakaoAddressParams,
@@ -10,7 +11,9 @@ import type {
   KakaoGeoParams,
   KakaoGeoDocument,
   KakaoGeoResponse,
+  KakaoGeoRoadDocument,
 } from "../types";
+
 import { convertGeo } from "@/shared/utils/convertGeo";
 
 const convertAddressDocument = (doc: KakaoAddressDocument): Location => {
@@ -28,7 +31,18 @@ const convertAddressDocument = (doc: KakaoAddressDocument): Location => {
   };
 };
 
-const convertGeoDocument = (doc: KakaoGeoDocument) => {
+const convertGeoDocument = (doc: KakaoGeoDocument | KakaoGeoRoadDocument) => {
+  if ("road_address" in doc) {
+    return {
+      id: `${doc.address?.address_name}`,
+      addressName: `${doc.address?.region_1depth_name} ${doc.address?.region_2depth_name} ${doc.address?.region_3depth_name}`,
+      region1Depth: doc.address?.region_1depth_name || "",
+      region2Depth: doc.address?.region_2depth_name || "",
+      region3Depth: doc.address?.region_3depth_name || "",
+      latitude: 0,
+      longitude: 0,
+    };
+  }
   const gridCoordinates = convertGeo(doc.x, doc.y);
   return {
     id: `${doc.x}-${doc.y}-${doc.address_name}`,
