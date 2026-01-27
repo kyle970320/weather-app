@@ -15,7 +15,7 @@ export default function WeatherSkeleton() {
           <div className="flex items-center justify-between">
             <div className="flex flex-col items-center gap-2">
               {/* 현재 기온 */}
-              <Skeleton className="h-14 w-24 rounded-md" />
+              <Skeleton className="h-12 w-24 rounded-md" />
 
               {/* 최고 / 최저 */}
               <Skeleton className="h-5 w-40 rounded-md" />

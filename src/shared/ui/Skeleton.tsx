@@ -1,17 +1,23 @@
-import { cn } from "@/shared/lib/variants";
+import { cn } from "../lib/variants";
 
-interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
-}
-
-export default function Skeleton({ className, ...props }: SkeletonProps) {
+export default function Skeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-white/10 before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-linear-to-r before:from-transparent before:via-white/20 before:to-transparent",
+        "relative overflow-hidden rounded-md bg-white/10",
         className,
       )}
-      {...props}
-    />
+    >
+      <div
+        className="
+          absolute top-0 left-0
+          h-full
+          animate-shimmer
+          bg-linear-to-r
+          from-transparent via-white/50 to-transparent
+          w-[200%]
+        "
+      />
+    </div>
   );
 }
