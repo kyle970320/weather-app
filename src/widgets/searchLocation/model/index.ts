@@ -1,0 +1,1 @@
+export { useSearchBarLocation } from "./useSearchBarLocation";

@@ -1,14 +1,18 @@
 import { cn } from "@/shared/lib/variants";
 
 interface SearchSuggestionsProps {
+  activeIndex: number;
+  onActiveIndex: (index: number) => void;
   value: string;
   isFocused: boolean;
   suggestions: string[];
-  onSuggestionClick: (suggestion: string) => void;
+  onSuggestionClick: (suggestion: string, index: number) => void;
   className?: string;
 }
 
 export function SearchSuggestions({
+  activeIndex,
+  onActiveIndex,
   value,
   isFocused,
   suggestions,
@@ -30,8 +34,12 @@ export function SearchSuggestions({
           <button
             key={`${suggestion}-${index}`}
             type="button"
-            onClick={() => onSuggestionClick(suggestion)}
-            className="w-full text-left px-4 py-2 hover:bg-sub-bg transition-colors text-sm"
+            onMouseEnter={() => onActiveIndex(index)}
+            onClick={() => onSuggestionClick(suggestion, index)}
+            className={cn(
+              "w-full text-left px-4 py-2 transition-colors text-sm",
+              activeIndex === index && "bg-main/50",
+            )}
           >
             {suggestion}
           </button>

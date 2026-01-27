@@ -5,35 +5,45 @@ import { SearchInput, SearchSuggestions } from "./ui";
 interface SearchLocationProps {
   placeholder?: string;
   className?: string;
-  isFocused: boolean;
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  onSearchFocus: () => void;
   searchValue: string;
-  onChange: (value: string) => void;
   suggestions: string[];
+  isFocused: boolean;
+  activeIndex: number;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  onChange: (value: string) => void;
+  onSearchFocus: () => void;
   onSearchClick: () => void;
-  onSuggestionClick: (suggestion: string) => void;
+  onSearchInputClick: () => void;
+  onActiveIndex: (index: number) => void;
+  onSuggestionClick: (suggestion: string, index: number) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function SearchLocation({
   placeholder = "검색어를 입력하세요",
   className,
-  containerRef,
-  isFocused,
-  onSearchFocus,
   searchValue,
-  onChange,
   suggestions,
+  isFocused,
+  activeIndex,
+  containerRef,
+  onChange,
+  onSearchFocus,
+  onSearchInputClick,
   onSuggestionClick,
   onSearchClick,
+  onActiveIndex,
+  onKeyDown,
 }: SearchLocationProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      onChange(searchValue);
+    if (onKeyDown) {
+      onKeyDown(e);
+    } else if (e.key === "Enter") {
+      onSearchClick();
     }
   };
 
@@ -43,6 +53,7 @@ export default function SearchLocation({
       className={cn("relative z-1 w-full flex flex-col rounded-md", className)}
     >
       <SearchInput
+        onSearchInputClick={onSearchInputClick}
         placeholder={placeholder}
         value={searchValue}
         onChange={handleChange}
@@ -52,6 +63,8 @@ export default function SearchLocation({
       />
 
       <SearchSuggestions
+        onActiveIndex={onActiveIndex}
+        activeIndex={activeIndex}
         value={searchValue.trim()}
         isFocused={isFocused}
         suggestions={suggestions}

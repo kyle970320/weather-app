@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 
 interface SearchInputProps {
   placeholder?: string;
+  onSearchInputClick: () => void;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -13,6 +14,7 @@ interface SearchInputProps {
 
 export function SearchInput({
   placeholder = "검색어를 입력하세요",
+  onSearchInputClick,
   value,
   onChange,
   onKeyDown,
@@ -24,6 +26,7 @@ export function SearchInput({
       type="text"
       placeholder={placeholder}
       value={value}
+      onClick={onSearchInputClick}
       onChange={onChange}
       onKeyDown={onKeyDown}
       onFocus={onFocus}
