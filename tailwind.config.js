@@ -8,6 +8,7 @@ export default {
         foreground: "var(--color-foreground)",
         "sub-bg": "var(--color-sub-bg)",
         main: "var(--color-main)",
+        
       },
     },
   },

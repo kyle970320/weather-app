@@ -32,9 +32,9 @@ const convertGeoDocument = (doc: KakaoGeoDocument) => {
   const gridCoordinates = convertGeo(doc.x, doc.y);
   return {
     id: `${doc.x}-${doc.y}-${doc.address_name}`,
-    addressName: doc.address_name,
-    latitude: gridCoordinates.ny,
-    longitude: gridCoordinates.nx,
+    addressName: doc?.address_name,
+    latitude: gridCoordinates?.ny,
+    longitude: gridCoordinates?.nx,
     region1Depth: doc.region_1depth_name,
     region2Depth: doc.region_2depth_name,
     region3Depth: doc.region_3depth_name,
@@ -62,8 +62,8 @@ export const getGeo = async (params: KakaoGeoParams): Promise<Location[]> => {
 
   const response = await kakaoGeoApiInstance.get<KakaoGeoResponse>("", {
     params: {
-      x: longitude, // 🔥 중요
-      y: latitude, // 🔥 중요
+      x: longitude,
+      y: latitude,
       page,
       size,
     },

@@ -39,6 +39,7 @@ export interface WeatherParams {
   numOfRows?: number;
   pageNo?: number;
   dataType?: "XML" | "JSON";
+  enabled?: boolean;
 }
 
 export interface HourlyTemperature {
@@ -58,11 +59,10 @@ export interface HourlyTemperature {
  * currentTemperature: 현재 기온
  * hourlyTemperatures: 시간대별 기온
  * data: 기타 카테고리별 데이터
- * 기타 카테고리: SKY, PTY, REH, WSD
- * - SKY: 하늘상태 (1:맑음, 3:구름많음, 4:흐림)
- * - PTY: 강수형태 (0:없음, 1:비, 2:비/눈, 3:눈, 4:소나기)
+ * 기타 카테고리: REH, WSD, POP
  * - REH: 습도 (%)
  * - WSD: 풍속 (m/s)
+ * - POP: 강수확률 (%)
  */
 export interface WeatherData {
   baseDate: string;
@@ -73,5 +73,5 @@ export interface WeatherData {
   minTemperature: string;
   currentTemperature: string;
   hourlyTemperatures: HourlyTemperature[];
-  data: Record<string, string>;
+  extraData: Record<string, string>;
 }

@@ -5,9 +5,14 @@ import { useMemo } from "react";
 interface Props {
   latitude: number | null;
   longitude: number | null;
+  enabled: boolean;
 }
 
-export const useSearchWeather = ({ latitude, longitude }: Props) => {
+export const useSearchWeather = ({
+  latitude,
+  longitude,
+  enabled = true,
+}: Props) => {
   // 좌표를 기상청 격자 좌표로 변환
   const gridCoordinates = useMemo(() => {
     if (latitude === null || longitude === null) {
@@ -25,6 +30,7 @@ export const useSearchWeather = ({ latitude, longitude }: Props) => {
     base_time,
     nx: gridCoordinates?.nx ?? 0,
     ny: gridCoordinates?.ny ?? 0,
+    enabled,
   });
 
   return {
