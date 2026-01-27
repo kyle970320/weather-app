@@ -2,10 +2,18 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import SearchLocation from "@/widgets/searchLocation";
 import { useLayout } from "@/app/Layout/model/useLayout";
 import { useSearchBarLocation } from "@/widgets/searchLocation/model/useSearchBarLocation";
+import { useFavorite } from "@/feature/favorite";
+import FavoriteCard from "@/widgets/favorite/ui/FavoriteCard";
 
 export default function Layout() {
   const { onSearchLoctaion } = useLayout();
-
+  const {
+    favorites,
+    isFavoriteItem,
+    removeFavoriteItem,
+    addFavoriteItem,
+    updateFavoriteItem,
+  } = useFavorite();
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -60,7 +68,21 @@ export default function Layout() {
           onActiveIndex={handleActiveIndex}
           onKeyDown={onKeyDown}
         />
-        <Outlet />
+        <Outlet
+          context={{ isFavoriteItem, removeFavoriteItem, addFavoriteItem }}
+        />
+        <div className="mt-4">
+          {favorites.map((el) => {
+            return (
+              <FavoriteCard
+                key={el.id}
+                favorite={el}
+                updateFavoriteItem={updateFavoriteItem}
+                removeFavoriteItem={removeFavoriteItem}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

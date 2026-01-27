@@ -20,7 +20,7 @@ export default function DetailPage() {
       <div className="mt-8">
         <Card>
           <div className="text-center py-8 text-red-300">
-            오류가 발생했습니다: {weatherError.message}
+            오류가 발생했습니다. 잠시후 다시 시도해주세요.
           </div>
         </Card>
       </div>
