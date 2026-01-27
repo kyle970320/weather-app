@@ -38,6 +38,7 @@ export default function FavoriteCard({
       key={favorite.id}
       className="bg-white/20 backdrop-blur-md rounded-2xl p-5 text-white shadow-xl hover:shadow-2xl transition cursor-pointer"
       onClick={() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
         navigate(`/${encodeURIComponent(favorite.addressName)}`);
       }}
     >
