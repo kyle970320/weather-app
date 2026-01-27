@@ -48,8 +48,8 @@ export default function useGetHome() {
 
   return {
     location,
-    data: weatherData?.data,
-    isLoading: isLoading,
-    error: error,
+    data: weatherData,
+    isWeatherLoading: isLoading,
+    weatherError: error,
   };
 }
