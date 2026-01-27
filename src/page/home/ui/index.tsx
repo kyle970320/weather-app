@@ -1,18 +1,23 @@
-import { useOutletContext } from "react-router-dom";
+// import { useOutletContext } from "react-router-dom";
 import Card from "@/shared/ui/Card";
-import type { WeatherData } from "@/entity/weather";
-import type { Location } from "@/entity/location";
-// import useGetHome from "../model/useGetHome";
+// import type { WeatherData } from "@/entity/weather";
+// import type { Location } from "@/entity/location";
+import useGetHome from "../model/useGetHome";
 
 export default function HomePage() {
-  const { weatherData, selectedLocation, isWeatherLoading, weatherError } =
-    useOutletContext<{
-      weatherData: WeatherData;
-      selectedLocation: Location;
-      isWeatherLoading: boolean;
-      weatherError: Error;
-    }>();
-  // const { latitude, longitude, addressName } = useGetHome();
+  // const { weatherData, selectedLocation, isWeatherLoading, weatherError } =
+  //   useOutletContext<{
+  //     weatherData: WeatherData;
+  //     selectedLocation: Location;
+  //     isWeatherLoading: boolean;
+  //     weatherError: Error;
+  //   }>();
+  const {
+    data: weatherData,
+    location,
+    isWeatherLoading,
+    weatherError,
+  } = useGetHome();
   if (isWeatherLoading) {
     return (
       <div className="mt-8">
@@ -35,7 +40,7 @@ export default function HomePage() {
     );
   }
 
-  if (!weatherData || !selectedLocation) {
+  if (!weatherData) {
     return (
       <div className="mt-8">
         <Card>
@@ -52,9 +57,7 @@ export default function HomePage() {
       {/* 현재 날씨 정보 */}
       <Card>
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold">
-            {selectedLocation?.addressName}
-          </h2>
+          <h2 className="text-2xl font-bold">{location?.addressName}</h2>
 
           <div className="flex items-center justify-between">
             <div>
