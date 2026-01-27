@@ -33,6 +33,18 @@ export interface KakaoLocationDocument {
   };
 }
 
+export interface KakaoLocationDocumentWithCoordinates {
+  region_type: string;
+  address_name: string;
+  region_1depth_name: string;
+  region_2depth_name: string;
+  region_3depth_name: string;
+  region_4depth_name: string;
+  code: string;
+  x: number;
+  y: number;
+}
+
 export interface KakaoLocationSearchResponse {
   meta: {
     total_count: number;
@@ -40,6 +52,13 @@ export interface KakaoLocationSearchResponse {
     is_end: boolean;
   };
   documents: KakaoLocationDocument[];
+}
+
+export interface KakaoLocationDocumentWithCoordinatesResponse {
+  meta: {
+    total_count: number;
+  };
+  documents: KakaoLocationDocumentWithCoordinates[];
 }
 
 export interface SearchLocationParams {
@@ -62,10 +81,10 @@ export interface Location {
   addressName: string;
   latitude: number;
   longitude: number;
-  addressType: "REGION" | "ROAD" | "REGION_ADDR" | "ROAD_ADDR";
   region1Depth: string;
   region2Depth: string;
   region3Depth: string;
   roadName?: string;
   buildingName?: string;
+  addressType?: "REGION" | "ROAD" | "REGION_ADDR" | "ROAD_ADDR";
 }
