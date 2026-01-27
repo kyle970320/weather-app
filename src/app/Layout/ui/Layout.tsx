@@ -4,15 +4,7 @@ import { useLayout } from "@/app/Layout/model/useLayout";
 import { useSearchModel } from "@/widgets/searchLocation/model/useSearchLocation";
 
 export default function Layout() {
-  const {
-    search,
-    onChangeSearch,
-    handleSearchLocation,
-    weatherData,
-    isWeatherLoading,
-    weatherError,
-    selectedLocation,
-  } = useLayout();
+  const { search, onChangeSearch, handleSearchLocation } = useLayout();
 
   const navigate = useNavigate();
   const {
@@ -43,7 +35,7 @@ export default function Layout() {
       <div className="max-w-[1200px] mx-auto">
         <SearchLocation
           placeholder="Search"
-          className="bg-white/60 backdrop-blur-2xl shadow-lg"
+          className="bg-sub-bg backdrop-blur-2xl shadow-lg"
           isFocused={isFocused}
           onSearchFocus={onCustomSearchFocus}
           searchValue={search}
@@ -52,14 +44,7 @@ export default function Layout() {
           handleSuggestionClick={handleSuggestionClick}
           onSearchClick={onSearchClick}
         />
-        <Outlet
-          context={{
-            weatherData,
-            selectedLocation,
-            isWeatherLoading,
-            weatherError,
-          }}
-        />
+        <Outlet />
       </div>
     </div>
   );
