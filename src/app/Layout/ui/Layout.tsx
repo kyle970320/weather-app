@@ -1,12 +1,16 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import SearchLocation from "@/widgets/searchLocation";
 import { useLayout } from "@/app/Layout/model/useLayout";
 import { useSearchModel } from "@/widgets/searchLocation/model/useSearchLocation";
+import { useEffect } from "react";
 
 export default function Layout() {
   const { search, onChangeSearch, handleSearchLocation } = useLayout();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
+
   const {
     isFocused,
     onSearchFocus,
@@ -29,6 +33,12 @@ export default function Layout() {
   const onSearchClick = () => {
     handleSuggestionClick(search);
   };
+  useEffect(() => {
+    const currentAddress = decodeURIComponent(pathname.split("/").pop() ?? "");
+    if (search !== currentAddress) {
+      onChangeSearch(currentAddress);
+    }
+  }, [pathname]);
 
   return (
     <div className="p-14 min-h-screen mx-auto bg-linear-to-br from-main/70 via-main/90 to-main">
