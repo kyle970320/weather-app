@@ -1,7 +1,9 @@
 import Card from "@/shared/ui/Card";
 import { useGetDetail } from "../model/useGetDetail";
-import { Droplets, Wind, CloudRain } from "lucide-react";
+import { Droplets, Wind, CloudRain, Star } from "lucide-react";
 import { WeatherSkeleton } from "@/widgets/weather/ui";
+import { useOutletContext } from "react-router-dom";
+import type { Favorite } from "@/entity/favorite";
 export default function DetailPage() {
   const {
     weatherData,
@@ -10,6 +12,29 @@ export default function DetailPage() {
     weatherError,
     extraData,
   } = useGetDetail();
+
+  const { isFavoriteItem, removeFavoriteItem, addFavoriteItem } =
+    useOutletContext<{
+      isFavoriteItem: (addressName: string) => boolean;
+      removeFavoriteItem: (addressName: string) => void;
+      addFavoriteItem: (favorite: Favorite) => void;
+    }>();
+
+  const isFavorite = isFavoriteItem(selectedLocation?.addressName ?? "");
+
+  const handleAddFavorite = () => {
+    if (isFavorite) {
+      removeFavoriteItem(selectedLocation?.addressName ?? "");
+      return;
+    }
+    addFavoriteItem({
+      id: crypto.randomUUID(),
+      addressName: selectedLocation?.addressName ?? "",
+      nickname: selectedLocation?.addressName ?? "",
+      latitude: selectedLocation?.latitude ?? 0,
+      longitude: selectedLocation?.longitude ?? 0,
+    });
+  };
 
   if (isWeatherLoading) {
     return <WeatherSkeleton />;
@@ -42,7 +67,15 @@ export default function DetailPage() {
   return (
     <div className="mt-8 space-y-6">
       {/* 현재 날씨 정보 */}
-      <Card className="flex flex-col items-center gap-6">
+      <Card className="relative flex flex-col items-center gap-6">
+        <div className="absolute top-5 right-5">
+          <Star
+            className="w-5 h-5 cursor-pointer"
+            onClick={handleAddFavorite}
+            color={isFavorite ? "yellow" : "white"}
+            fill={isFavorite ? "yellow" : "none"}
+          />
+        </div>
         <div className="flex flex-col items-center">
           <h2 className="text-2xl font-bold">
             {selectedLocation?.addressName}
