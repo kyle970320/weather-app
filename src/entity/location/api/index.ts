@@ -1,1 +1,1 @@
-export { getLocationWithAddress } from "./locationApi";
+export { getAddress, getGeo } from "./locationApi";

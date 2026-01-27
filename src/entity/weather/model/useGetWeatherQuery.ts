@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getWeather } from "../api";
 import type { WeatherParams } from "../types";
 
-export const useWeatherQuery = (params: WeatherParams) => {
+export const useGetWeatherQuery = (params: WeatherParams) => {
   return useQuery({
     queryKey: [
       "weather",

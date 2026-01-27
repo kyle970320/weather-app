@@ -3,17 +3,17 @@ import {
   kakaoGeoApiInstance,
 } from "@/shared/api/instance";
 import type {
-  KakaoLocationSearchResponse,
-  SearchLocationParams,
+  KakaoAddressResponse,
+  KakaoAddressParams,
   Location,
-  KakaoLocationDocument,
-  GetLocationWithCoordinatesParams,
-  KakaoLocationDocumentWithCoordinates,
-  KakaoLocationDocumentWithCoordinatesResponse,
+  KakaoAddressDocument,
+  KakaoGeoParams,
+  KakaoGeoDocument,
+  KakaoGeoResponse,
 } from "../types";
-import { convertToGridCoordinates } from "@/shared/utils/coordinateUtils";
+import { convertGeo } from "@/shared/utils/convertGeo";
 
-const convertLocationDocument = (doc: KakaoLocationDocument): Location => {
+const convertAddressDocument = (doc: KakaoAddressDocument): Location => {
   return {
     id: `${doc.x}-${doc.y}-${doc.address_name}`,
     addressName: doc.address_name,
@@ -28,10 +28,8 @@ const convertLocationDocument = (doc: KakaoLocationDocument): Location => {
   };
 };
 
-const convertLocationDocumentWithCoordinates = (
-  doc: KakaoLocationDocumentWithCoordinates,
-) => {
-  const gridCoordinates = convertToGridCoordinates(doc.x, doc.y);
+const convertGeoDocument = (doc: KakaoGeoDocument) => {
+  const gridCoordinates = convertGeo(doc.x, doc.y);
   return {
     id: `${doc.x}-${doc.y}-${doc.address_name}`,
     addressName: doc.address_name,
@@ -43,40 +41,33 @@ const convertLocationDocumentWithCoordinates = (
   };
 };
 
-export const getLocationWithAddress = async (
-  params: SearchLocationParams,
+export const getAddress = async (
+  params: KakaoAddressParams,
 ): Promise<Location[]> => {
   const { query, page = 1, size = 10 } = params;
 
-  const response =
-    await kakaoAddressApiInstance.get<KakaoLocationSearchResponse>("", {
-      params: {
-        query,
-        page,
-        size,
-      },
-    });
+  const response = await kakaoAddressApiInstance.get<KakaoAddressResponse>("", {
+    params: {
+      query,
+      page,
+      size,
+    },
+  });
 
-  return response.data.documents.map(convertLocationDocument);
+  return response.data.documents.map(convertAddressDocument);
 };
 
-export const getLocationWithCoordinates = async (
-  params: GetLocationWithCoordinatesParams,
-): Promise<Location[]> => {
+export const getGeo = async (params: KakaoGeoParams): Promise<Location[]> => {
   const { latitude, longitude, page = 1, size = 10 } = params;
 
-  const response =
-    await kakaoGeoApiInstance.get<KakaoLocationDocumentWithCoordinatesResponse>(
-      "",
-      {
-        params: {
-          x: longitude, // 🔥 중요
-          y: latitude, // 🔥 중요
-          page,
-          size,
-        },
-      },
-    );
+  const response = await kakaoGeoApiInstance.get<KakaoGeoResponse>("", {
+    params: {
+      x: longitude, // 🔥 중요
+      y: latitude, // 🔥 중요
+      page,
+      size,
+    },
+  });
 
-  return response.data.documents.map(convertLocationDocumentWithCoordinates);
+  return response.data.documents.map(convertGeoDocument);
 };

@@ -4,10 +4,10 @@
  * @param lat 위도 (latitude)
  * @returns { nx: number, ny: number } 기상청 격자 좌표
  */
-export function convertToGridCoordinates(
+export const convertGeo = (
   lon: number,
   lat: number,
-): { nx: number; ny: number } {
+): { nx: number; ny: number } => {
   const RE = 6371.00877; // 지구 반경(km)
   const GRID = 5.0; // 격자 간격(km)
   const SLAT1 = 30.0; // 투영 위도1(degree)
@@ -45,4 +45,4 @@ export function convertToGridCoordinates(
   const ny = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
 
   return { nx, ny };
-}
+};

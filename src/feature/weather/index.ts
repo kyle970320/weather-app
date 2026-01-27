@@ -1,0 +1,1 @@
+export { useSearchWeather } from "./model";

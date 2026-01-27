@@ -1,1 +1,1 @@
-export { useWeatherFeature } from "./useWeatherFeature";
+export { useSearchWeather } from "./useSearchWeather";

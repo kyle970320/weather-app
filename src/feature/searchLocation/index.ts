@@ -1,1 +1,1 @@
-export { useSearchLocationFeature } from "./model";
+export { useSearchAddress, useSearchGeo } from "./model";

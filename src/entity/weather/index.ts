@@ -1,4 +1,4 @@
-export { useWeatherQuery } from "./model";
+export { useGetWeatherQuery } from "./model";
 export type {
   WeatherData,
   WeatherParams,

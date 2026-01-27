@@ -1,4 +1,4 @@
-export interface KakaoLocationDocument {
+export interface KakaoAddressDocument {
   address_name: string;
   y: string;
   x: string;
@@ -33,7 +33,7 @@ export interface KakaoLocationDocument {
   };
 }
 
-export interface KakaoLocationDocumentWithCoordinates {
+export interface KakaoGeoDocument {
   region_type: string;
   address_name: string;
   region_1depth_name: string;
@@ -45,30 +45,30 @@ export interface KakaoLocationDocumentWithCoordinates {
   y: number;
 }
 
-export interface KakaoLocationSearchResponse {
+export interface KakaoAddressResponse {
   meta: {
     total_count: number;
     pageable_count: number;
     is_end: boolean;
   };
-  documents: KakaoLocationDocument[];
+  documents: KakaoAddressDocument[];
 }
 
-export interface KakaoLocationDocumentWithCoordinatesResponse {
+export interface KakaoGeoResponse {
   meta: {
     total_count: number;
   };
-  documents: KakaoLocationDocumentWithCoordinates[];
+  documents: KakaoGeoDocument[];
 }
 
-export interface SearchLocationParams {
+export interface KakaoAddressParams {
   query: string;
   page?: number;
   size?: number;
   enabled?: boolean;
 }
 
-export interface GetLocationWithCoordinatesParams {
+export interface KakaoGeoParams {
   latitude: number;
   longitude: number;
   page?: number;

@@ -1,5 +1,5 @@
-import { getCurrentBaseDateTime, useWeatherQuery } from "@/entity/weather";
-import { convertToGridCoordinates } from "@/shared/utils/coordinateUtils";
+import { getCurrentBaseDateTime, useGetWeatherQuery } from "@/entity/weather";
+import { convertGeo } from "@/shared/utils/convertGeo";
 import { useMemo } from "react";
 
 interface Props {
@@ -7,20 +7,20 @@ interface Props {
   longitude: number | null;
 }
 
-export const useWeatherFeature = ({ latitude, longitude }: Props) => {
+export const useSearchWeather = ({ latitude, longitude }: Props) => {
   // 좌표를 기상청 격자 좌표로 변환
   const gridCoordinates = useMemo(() => {
     if (latitude === null || longitude === null) {
       return null;
     }
-    return convertToGridCoordinates(longitude, latitude);
+    return convertGeo(longitude, latitude);
   }, [latitude, longitude]);
 
   // 날짜/시간 계산
   const { base_date, base_time } = getCurrentBaseDateTime();
 
   // 날씨 쿼리
-  const { data, isLoading, error } = useWeatherQuery({
+  const { data, isLoading, error } = useGetWeatherQuery({
     base_date,
     base_time,
     nx: gridCoordinates?.nx ?? 0,

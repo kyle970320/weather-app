@@ -1,23 +1,22 @@
-import { useSearchLocationFeature } from "@/feature/searchLocation";
-import { useWeatherFeature } from "@/feature/weather/model";
+import { useSearchAddress } from "@/feature/searchLocation";
+import { useSearchWeather } from "@/feature/weather";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 export const useGetDetail = () => {
   const { address } = useParams();
 
-  const { apiResults, handleSearchLocation } = useSearchLocationFeature({
+  const { addressesLocation, handleSearchLocation } = useSearchAddress({
     query: address as string,
-    localSearchLimit: 5,
   });
 
-  const selectedLocation = apiResults?.[0] ?? null;
+  const selectedLocation = addressesLocation?.[0] ?? null;
 
   const {
     data: weatherData,
     isLoading: isWeatherLoading,
     error: weatherError,
-  } = useWeatherFeature({
+  } = useSearchWeather({
     latitude: selectedLocation?.latitude ?? null,
     longitude: selectedLocation?.longitude ?? null,
   });

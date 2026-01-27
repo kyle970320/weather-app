@@ -1,1 +1,1 @@
-export { useWeatherQuery } from "./useWeatherQuery";
+export { useGetWeatherQuery } from "./useGetWeatherQuery";

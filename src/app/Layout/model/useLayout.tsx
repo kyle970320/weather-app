@@ -1,5 +1,5 @@
-import { useSearchLocationFeature } from "@/feature/searchLocation";
-import { useWeatherFeature } from "@/feature/weather/model";
+import { useSearchAddress } from "@/feature/searchLocation";
+import { useSearchWeather } from "@/feature/weather";
 import { useState } from "react";
 
 export const useLayout = () => {
@@ -7,18 +7,17 @@ export const useLayout = () => {
   const onChangeSearch = (value: string) => {
     setSearch(value);
   };
-  const { apiResults, handleSearchLocation } = useSearchLocationFeature({
+  const { addressesLocation, handleSearchLocation } = useSearchAddress({
     query: search,
-    localSearchLimit: 5,
   });
 
-  const selectedLocation = apiResults?.[0] ?? null;
+  const selectedLocation = addressesLocation?.[0] ?? null;
 
   const {
     data: weatherData,
     isLoading: isWeatherLoading,
     error: weatherError,
-  } = useWeatherFeature({
+  } = useSearchWeather({
     latitude: selectedLocation?.latitude ?? null,
     longitude: selectedLocation?.longitude ?? null,
   });
@@ -26,7 +25,7 @@ export const useLayout = () => {
   return {
     search,
     onChangeSearch,
-    apiResults,
+    addressesLocation,
     handleSearchLocation,
     weatherData,
     isWeatherLoading,

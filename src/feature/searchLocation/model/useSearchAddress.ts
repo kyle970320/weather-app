@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSearchLocationQuery } from "@/entity/location";
-import type { UseSearchLocationOptions } from "../types";
+import { useGetAddressQuery, type KakaoAddressParams } from "@/entity/location";
 
 /**
  * 주소값으로 좌표 받아오기
  * 리스트에서 선택 or enter 검색 시 refetch 실행
  */
-export const useSearchLocationFeature = (options: UseSearchLocationOptions) => {
+export const useSearchAddress = (options: KakaoAddressParams) => {
   const { query: initialQuery } = options;
   const [searchQuery, setSearchQuery] = useState(initialQuery);
 
@@ -16,11 +15,11 @@ export const useSearchLocationFeature = (options: UseSearchLocationOptions) => {
   }, [initialQuery]);
 
   const {
-    data: apiResults,
+    data: addressesLocation,
     isLoading,
     error,
     refetch,
-  } = useSearchLocationQuery({
+  } = useGetAddressQuery({
     query: searchQuery.trim(),
     page: 1,
     size: 10,
@@ -41,7 +40,7 @@ export const useSearchLocationFeature = (options: UseSearchLocationOptions) => {
 
   return {
     query: searchQuery,
-    apiResults,
+    addressesLocation,
     isLoading,
     error: error as Error | null,
     isEmpty,
