@@ -15,7 +15,7 @@ export const useSearchAddress = (options: KakaoAddressParams) => {
   }, [initialQuery]);
 
   const {
-    data: apiResults,
+    data: addressesLocation,
     isLoading,
     error,
     refetch,
@@ -40,7 +40,7 @@ export const useSearchAddress = (options: KakaoAddressParams) => {
 
   return {
     query: searchQuery,
-    apiResults,
+    addressesLocation,
     isLoading,
     error: error as Error | null,
     isEmpty,

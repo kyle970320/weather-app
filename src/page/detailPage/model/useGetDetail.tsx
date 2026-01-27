@@ -6,11 +6,11 @@ import { useParams } from "react-router-dom";
 export const useGetDetail = () => {
   const { address } = useParams();
 
-  const { apiResults, handleSearchLocation } = useSearchAddress({
+  const { addressesLocation, handleSearchLocation } = useSearchAddress({
     query: address as string,
   });
 
-  const selectedLocation = apiResults?.[0] ?? null;
+  const selectedLocation = addressesLocation?.[0] ?? null;
 
   const {
     data: weatherData,

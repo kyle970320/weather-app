@@ -7,12 +7,11 @@ export const useLayout = () => {
   const onChangeSearch = (value: string) => {
     setSearch(value);
   };
-  const { apiResults, handleSearchLocation } = useSearchAddress({
+  const { addressesLocation, handleSearchLocation } = useSearchAddress({
     query: search,
-    localSearchLimit: 5,
   });
 
-  const selectedLocation = apiResults?.[0] ?? null;
+  const selectedLocation = addressesLocation?.[0] ?? null;
 
   const {
     data: weatherData,
@@ -26,7 +25,7 @@ export const useLayout = () => {
   return {
     search,
     onChangeSearch,
-    apiResults,
+    addressesLocation,
     handleSearchLocation,
     weatherData,
     isWeatherLoading,
