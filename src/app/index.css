@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "@minus-ui/core/plugin";
 
 @theme {
@@ -6,6 +7,16 @@
   --color-background: #fefdfa;
   --color-foreground: #1a1a1a;
   --color-sub-bg: #ebebeb;
+  --animate-shimmer: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 @layer base {
   :root {
