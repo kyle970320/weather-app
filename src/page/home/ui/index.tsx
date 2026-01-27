@@ -56,18 +56,20 @@ export default function HomePage() {
             <div className="rounded-xl p-3 text-center">
               <Wind className="w-5 h-5 mx-auto mb-1" />
               <div className="text-sm opacity-80">바람</div>
-              <div className="font-semibold">{extraData?.windSpeed} m/s</div>
+              <div className="font-semibold">
+                {extraData?.windSpeed ?? 0} m/s
+              </div>
             </div>
             <div className="rounded-xl p-3 text-center">
               <Droplets className="w-5 h-5 mx-auto mb-1" />
               <div className="text-sm opacity-80">습도</div>
-              <div className="font-semibold">{extraData?.humidity}%</div>
+              <div className="font-semibold">{extraData?.humidity ?? 0}%</div>
             </div>
             <div className="rounded-xl p-3 text-center">
               <CloudRain className="w-5 h-5 mx-auto mb-1" />
               <div className="text-sm opacity-80">강수확률</div>
               <div className="font-semibold">
-                {extraData?.rainfallProbability}%
+                {extraData?.rainfallProbability ?? 0}%
               </div>
             </div>
           </div>
