@@ -71,7 +71,7 @@ export default function Layout() {
         <Outlet
           context={{ isFavoriteItem, removeFavoriteItem, addFavoriteItem }}
         />
-        <div className="mt-4">
+        <div className="flex flex-col gap-4 mt-4">
           {favorites.map((el) => {
             return (
               <FavoriteCard

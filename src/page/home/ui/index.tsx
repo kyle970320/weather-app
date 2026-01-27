@@ -19,7 +19,9 @@ export default function HomePage() {
     weatherError,
     extraData,
   } = useGetHome();
+
   const isFavorite = isFavoriteItem(location?.addressName ?? "");
+
   const handleAddFavorite = () => {
     if (isFavorite) {
       removeFavoriteItem(location?.addressName ?? "");
@@ -33,6 +35,7 @@ export default function HomePage() {
       longitude: location?.longitude ?? 0,
     });
   };
+
   if (isWeatherLoading) {
     return <WeatherSkeleton />;
   }
