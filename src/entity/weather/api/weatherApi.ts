@@ -60,13 +60,12 @@ const convertWeatherResponse = (
     (item) => item.fcstDate === today,
   ) as WeatherItem[];
 
-  // 최고기온 (TMX)
-  const maxTempItem = todayItems.find((item) => item.category === "TMX");
-  const maxTemperature = maxTempItem?.fcstValue || "";
+  const todayTemps = todayItems
+    .filter((item) => item.category === "TMP")
+    .map((item) => Number(item.fcstValue));
 
-  // 최저기온 (TMN)
-  const minTempItem = todayItems.find((item) => item.category === "TMN");
-  const minTemperature = minTempItem?.fcstValue || "";
+  const minTemperature = Math.min(...todayTemps).toString();
+  const maxTemperature = Math.max(...todayTemps).toString();
 
   // 시간대별 기온 (TMP) - 3시간 간격
   const tempItems = todayItems
@@ -102,11 +101,16 @@ const convertWeatherResponse = (
       .filter((item) => item.fcstTime === firstTimeItem.fcstTime)
       .forEach((item) => {
         if (!["TMP", "TMX", "TMN"].includes(item.category)) {
-          data[item.category] = item.fcstValue;
+          const categoryMap: Record<string, string> = {
+            WSD: "windSpeed",
+            POP: "rainfallProbability",
+            REH: "humidity",
+          };
+          data[categoryMap[item.category]] = item.fcstValue;
         }
       });
   }
-
+  console.log(data);
   return {
     baseDate: firstItem.baseDate,
     baseTime: firstItem.baseTime,
@@ -116,6 +120,6 @@ const convertWeatherResponse = (
     minTemperature,
     currentTemperature,
     hourlyTemperatures,
-    data,
+    extraData: data,
   };
 };
