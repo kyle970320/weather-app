@@ -100,13 +100,22 @@ export const useSearchBarLocation = ({
   }, [initialSearch]);
 
   useEffect(() => {
+    if (!search.trim()) {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      setDebouncedSearch("");
+      setActiveIndex(-1);
+      return;
+    }
+
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
 
     debounceTimerRef.current = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 700);
+    }, 30);
 
     return () => {
       if (debounceTimerRef.current) {
