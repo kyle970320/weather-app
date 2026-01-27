@@ -31,5 +31,6 @@ export const useGetDetail = () => {
     isWeatherLoading,
     weatherError,
     selectedLocation,
+    extraData: weatherData?.extraData,
   };
 };

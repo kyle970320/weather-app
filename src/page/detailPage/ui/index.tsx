@@ -1,9 +1,14 @@
 import Card from "@/shared/ui/Card";
 import { useGetDetail } from "../model/useGetDetail";
-
+import { Droplets, Wind, CloudRain } from "lucide-react";
 export default function DetailPage() {
-  const { weatherData, selectedLocation, isWeatherLoading, weatherError } =
-    useGetDetail();
+  const {
+    weatherData,
+    selectedLocation,
+    isWeatherLoading,
+    weatherError,
+    extraData,
+  } = useGetDetail();
 
   if (isWeatherLoading) {
     return (
@@ -27,7 +32,7 @@ export default function DetailPage() {
     );
   }
 
-  if (!weatherData || !selectedLocation) {
+  if (!weatherData) {
     return (
       <div className="mt-8">
         <Card>
@@ -42,15 +47,15 @@ export default function DetailPage() {
   return (
     <div className="mt-8 space-y-6">
       {/* 현재 날씨 정보 */}
-      <Card>
-        <div className="space-y-4">
+      <Card className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center">
           <h2 className="text-2xl font-bold">
             {selectedLocation?.addressName}
           </h2>
 
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-5xl font-bold">
+              <div className="text-5xl font-bold text-center">
                 {weatherData.currentTemperature}°
               </div>
               <div className="text-lg opacity-80">
@@ -60,23 +65,43 @@ export default function DetailPage() {
             </div>
           </div>
         </div>
-      </Card>
-
-      {weatherData.hourlyTemperatures.length > 0 && (
-        <Card>
-          <h3 className="text-xl font-semibold mb-4">시간대별 기온</h3>
-          <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
-            {weatherData.hourlyTemperatures.map((hourly, index) => (
-              <div key={index} className="text-center">
-                <div className="text-sm opacity-80">{hourly.time}시</div>
-                <div className="text-lg font-semibold mt-1">
-                  {hourly.temperature}°
-                </div>
+        <Card className="bg-white/5 p-0 shadow-xl">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="rounded-xl p-3 text-center">
+              <Wind className="w-5 h-5 mx-auto mb-1" />
+              <div className="text-sm opacity-80">바람</div>
+              <div className="font-semibold">{extraData?.windSpeed} m/s</div>
+            </div>
+            <div className="rounded-xl p-3 text-center">
+              <Droplets className="w-5 h-5 mx-auto mb-1" />
+              <div className="text-sm opacity-80">습도</div>
+              <div className="font-semibold">{extraData?.humidity}%</div>
+            </div>
+            <div className="rounded-xl p-3 text-center">
+              <CloudRain className="w-5 h-5 mx-auto mb-1" />
+              <div className="text-sm opacity-80">강수확률</div>
+              <div className="font-semibold">
+                {extraData?.rainfallProbability}%
               </div>
-            ))}
+            </div>
           </div>
         </Card>
-      )}
+        {weatherData.hourlyTemperatures.length > 0 && (
+          <Card className="bg-white/5 shadow-xl">
+            <h3 className="text-xl font-semibold mb-4">시간대별 기온</h3>
+            <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
+              {weatherData.hourlyTemperatures.map((hourly, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-sm opacity-80">{hourly.time}시</div>
+                  <div className="text-lg font-semibold mt-1">
+                    {hourly.temperature}°
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+      </Card>
     </div>
   );
 }
