@@ -1,6 +1,5 @@
 import { memo } from "react";
 import { useGetCharacter } from "../model/useGetCharacter";
-import Skeleton from "@/shared/ui/Skeleton";
 
 interface Props {
   ptyType?: string;
@@ -14,7 +13,7 @@ export default memo(function CharacterCanvas({
   width = 160,
   height = 160,
 }: Props) {
-  const { mountRef, ready } = useGetCharacter({
+  const { mountRef } = useGetCharacter({
     ptyType,
     currentTemperature,
     width,
@@ -23,9 +22,6 @@ export default memo(function CharacterCanvas({
   return (
     <div className="relative" style={{ width, height }}>
       <div ref={mountRef} className="relative w-full h-full" />
-      {/* {!ready && (
-        <Skeleton className="absolute top-0 left-0 w-full h-full bg-[#83B3FF]" />
-      )} */}
     </div>
   );
 });
