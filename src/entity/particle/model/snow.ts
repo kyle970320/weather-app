@@ -14,7 +14,7 @@ export const createSnow = (particles: THREE.Points[], world: THREE.Group) => {
     positions[i * 3 + 1] = Math.random() * 6;
     positions[i * 3 + 2] = (Math.random() - 0.5) * 6;
 
-    velocities[i] = 0.01 + Math.random() * 0.03; // ❄️ 눈은 느리게
+    velocities[i] = 0.01 + Math.random() * 0.03;
   }
 
   const geometry = new THREE.BufferGeometry();
