@@ -98,7 +98,7 @@ export const addHeadphones = (head: THREE.Mesh) => {
 
 // 특정 캐릭터 인덱스에 맞는 악세서리 배정
 export const setupAccessory = (
-  accessoryType: "beanie" | "headphones",
+  accessoryType: "beanie" | "headphones" | "none",
   head: THREE.Mesh,
 ) => {
   switch (accessoryType) {
@@ -106,6 +106,8 @@ export const setupAccessory = (
       return addBeanie(head);
     case "headphones":
       return addHeadphones(head);
+    case "none":
+      return null;
     default:
       return null;
   }

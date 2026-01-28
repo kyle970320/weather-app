@@ -3,6 +3,7 @@ import { setupHair } from "./hair";
 import { setupEar } from "./ear";
 import { setupEyeCommon, setupEyeCold } from "./eye";
 import { setupAccessory } from "./accessory";
+import { setupSweat } from "./sweet";
 export const makeBlobProfile = ({
   height = 5,
   baseRadius = 1.8,
@@ -71,6 +72,66 @@ export const createCharacterCommon = (
     rightEyelid,
   } = setupEyeCommon(faceGroup);
 
+  group.position.set(x, y, z);
+  group.scale.set(1.5, 1.5, 0.5);
+  group.userData = {
+    head: head,
+    faceGroup: faceGroup,
+    leftPupil: leftPupil,
+    rightPupil: rightPupil,
+    leftEyeWhite: leftEyeWhite,
+    rightEyeWhite: rightEyeWhite,
+    leftEyelid: leftEyelid,
+    rightEyelid: rightEyelid,
+    originalRotation: { x: 0, y: 0 },
+    blinkTimer: 0,
+    nextBlinkTime: 2000 + Math.random() * 4000,
+    isBlinking: false,
+    blinkProgress: 0,
+    shakeTime: Math.random() * 1000,
+    shakeIntensity: 0.04,
+  };
+
+  return group;
+};
+export const createCharacterWarm = (
+  color: number,
+  hairColor: number,
+  x: number,
+  y: number,
+  z = 0,
+) => {
+  const group = new THREE.Group();
+
+  const HEAD_RADIUS = 0.8;
+  const headGeometry = new THREE.SphereGeometry(HEAD_RADIUS, 32, 32);
+  const headMaterial = new THREE.MeshStandardMaterial({
+    color: color,
+    roughness: 0.37,
+    metalness: 0.0,
+  });
+  const head = new THREE.Mesh(headGeometry, headMaterial);
+  head.position.y = 0.5;
+  head.castShadow = true;
+  head.receiveShadow = true;
+  group.add(head);
+
+  const faceGroup = new THREE.Group();
+  head.add(faceGroup);
+
+  setupHair("twinBuns", head, hairColor);
+  setupAccessory("none", head);
+  setupEar(head, color);
+  const {
+    leftPupil,
+    rightPupil,
+    leftEyeWhite,
+    rightEyeWhite,
+    leftEyelid,
+    rightEyelid,
+  } = setupEyeCommon(faceGroup);
+  const sweatGroup = setupSweat(faceGroup);
+  group.add(sweatGroup);
   group.position.set(x, y, z);
   group.scale.set(1.5, 1.5, 0.5);
   group.userData = {

@@ -38,11 +38,11 @@ function hairTwinBuns(head: THREE.Mesh, hairColor: number) {
   const bunGeo = new THREE.SphereGeometry(0.22, 16, 16);
 
   const left = new THREE.Mesh(bunGeo, mat);
-  left.position.set(-0.45, 0.92, -0.05);
+  left.position.set(-0.45, 0.72, -0.05);
   left.castShadow = true;
 
   const right = new THREE.Mesh(bunGeo, mat);
-  right.position.set(0.45, 0.92, -0.05);
+  right.position.set(0.45, 0.72, -0.05);
   right.castShadow = true;
 
   head.add(left);
