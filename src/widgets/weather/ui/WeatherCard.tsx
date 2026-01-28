@@ -153,7 +153,7 @@ export default function WeatherCard({
             <h3 className="text-lg sm:text-xl font-semibold mb-4">
               시간대별 기온
             </h3>
-            <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
+            <div className="grid grid-cols-3 md:grid-cols-9 gap-4 whitespace-nowrap">
               {weatherData.hourlyTemperatures.map((hourly, index) => (
                 <div key={index} className="text-center">
                   <div className="text-sm opacity-80">{hourly.time}시</div>

@@ -82,7 +82,7 @@ const convertWeatherResponse = (
       const dayString = item.fcstDate.slice(6); // 일
 
       const time =
-        dayString !== prevDay ? `${dayString} ${hourString}` : hourString;
+        dayString !== prevDay ? `${dayString}. ${hourString}` : hourString;
 
       hourlyTemperatures.push({
         time,
