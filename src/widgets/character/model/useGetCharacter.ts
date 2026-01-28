@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import {
   createCharacterCommon,
@@ -20,8 +20,6 @@ export const useGetCharacter = ({
   width = 160,
   height = 160,
 }: Props) => {
-  const [ready, setReady] = useState(false);
-  const readyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const mountRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<THREE.Points[]>([]);
   const canvasWidth = width;
@@ -154,9 +152,6 @@ export const useGetCharacter = ({
       character.rotation.x = shake * 0.05;
 
       renderer.render(scene, camera);
-      readyTimerRef.current = setTimeout(() => {
-        setReady(true);
-      }, 100);
     }
 
     createBgParticles(world);
@@ -167,14 +162,10 @@ export const useGetCharacter = ({
       renderer.dispose();
       renderer.forceContextLoss();
       currentMount.removeChild(renderer.domElement);
-      if (readyTimerRef.current) {
-        clearTimeout(readyTimerRef.current);
-      }
     };
   }, [isCold, createCharacter, createBgParticles, updateBgParticles]);
 
   return {
     mountRef,
-    ready,
   };
 };
