@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/shared/ui/Input";
 import { useRef, useState, type KeyboardEvent } from "react";
 import ConfirmModal from "@/widgets/confirmModal/ui/ConfirmModal";
+import Card from "@/shared/ui/Card";
 
 interface Props {
   updateFavoriteItem: (favorite: Favorite) => void;
@@ -77,17 +78,18 @@ export default function FavoriteCard({
         onClose={() => setIsOpenConfirmModal(false)}
         onConfirm={() => handleRemoveFavoriteItem(favorite.addressName)}
       />
-      <div
+      <Card
         key={favorite.id}
-        className="bg-white/25 rounded-2xl text-white shadow-xl hover:shadow-2xl transition cursor-pointer"
+        className="p-4 bg-white/25 rounded-2xl text-white shadow-xl hover:shadow-2xl transition cursor-pointer"
       >
-        <div className="flex px-5 pt-5 h-15 items-center justify-between mb-3">
+        <div className="flex h-15 items-center justify-between mb-3">
           {isOpenEditMode ? (
             <Input
               ref={inputRef}
               className="bg-white/20 rounded px-2 py-1 text-lg font-semibold outline-none w-full"
               type="text"
               autoFocus
+              maxLength={25}
               value={editName}
               onChange={onChangeName}
               onKeyDown={handleKeyDown}
@@ -97,7 +99,9 @@ export default function FavoriteCard({
               }
             />
           ) : (
-            <h3 className="px-2 text-lg font-semibold">{favorite.nickname}</h3>
+            <h3 className="text-lg font-semibold ellipsis-2-line">
+              {favorite.nickname}
+            </h3>
           )}
 
           <div className="flex gap-1">
@@ -118,20 +122,20 @@ export default function FavoriteCard({
             </button>
           </div>
         </div>
-        <div onClick={handleNavigateDetail} className="px-5 pb-5">
+        <div onClick={handleNavigateDetail}>
           <div className="text-sm opacity-80 mb-3">{favorite.addressName}</div>
           <div className="flex flex-col items-end justify-end">
-            <div className="text-4xl font-light">
+            <div className="text-3xl sm:text-4xl font-light">
               {weatherData?.currentTemperature}°
             </div>
             <div className="text-right">
-              <div className="text-base">
+              <div className="text-sm sm:text-base">
                 {weatherData?.maxTemperature}° / {weatherData?.minTemperature}°
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   );
 }

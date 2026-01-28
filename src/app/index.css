@@ -26,6 +26,20 @@
     --color-sub-bg: #b9d5ff;
   }
 }
+@layer utilities {
+  .ellipsis-1-line {
+    @apply overflow-hidden text-ellipsis break-words;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .ellipsis-2-line {
+    @apply w-full overflow-hidden text-ellipsis break-words;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
 
 * {
   transition:

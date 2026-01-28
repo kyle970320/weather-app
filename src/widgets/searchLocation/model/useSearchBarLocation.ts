@@ -115,7 +115,7 @@ export const useSearchBarLocation = ({
 
     debounceTimerRef.current = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 30);
+    }, 100);
 
     return () => {
       if (debounceTimerRef.current) {
