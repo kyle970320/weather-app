@@ -3,6 +3,7 @@ import * as THREE from "three";
 import {
   createCharacterCommon,
   createCharacterCold,
+  createCharacterWarm,
 } from "@/entity/character/model/character";
 import { setupLight } from "@/entity/character/model";
 import { HAIR_COLORS, SKIN_COLORS } from "@/entity/character";
@@ -36,15 +37,21 @@ export const useGetCharacter = ({
     return Number(currentTemperature) < 0;
   }, [currentTemperature]);
 
+  const isWarm = useMemo(() => {
+    return Number(currentTemperature) >= 20;
+  }, [currentTemperature]);
+
   const createCharacter = useCallback(
     (color: number, hairColor: number, x: number, y: number, z = 0) => {
       if (isCold) {
         return createCharacterCold(color, hairColor, x, y, z);
+      } else if (isWarm) {
+        return createCharacterWarm(color, hairColor, x, y, z);
       } else {
         return createCharacterCommon(color, hairColor, x, y, z);
       }
     },
-    [isCold],
+    [isCold, isWarm],
   );
 
   const createBgParticles = useCallback(
