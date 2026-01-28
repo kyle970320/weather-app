@@ -181,7 +181,7 @@ export const createCharacterCold = (
   head.add(faceGroup);
 
   setupHair("fluffy", head, hairColor);
-  setupAccessory("headphones", head);
+  setupAccessory("earmuffs", head);
   setupEar(head, color);
   const {
     leftPupil,

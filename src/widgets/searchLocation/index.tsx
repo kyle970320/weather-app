@@ -50,7 +50,7 @@ export default function SearchLocation({
   return (
     <div
       ref={containerRef}
-      className={cn("relative z-1 w-full flex flex-col rounded-md", className)}
+      className={cn("relative z-11 w-full flex flex-col rounded-md", className)}
     >
       <SearchInput
         onSearchInputClick={onSearchInputClick}
