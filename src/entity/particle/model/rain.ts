@@ -23,7 +23,7 @@ export const createRain = (paricles: THREE.Points[], world: THREE.Group) => {
 
   const material = new THREE.PointsMaterial({
     color: 0xfafdff,
-    size: 0.5,
+    size: 0.7,
     transparent: true,
     opacity: 0.8,
     depthWrite: false,

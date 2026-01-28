@@ -23,7 +23,7 @@ export const createSnow = (particles: THREE.Points[], world: THREE.Group) => {
 
   const material = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.5,
+    size: 1,
     transparent: true,
     opacity: 0.8,
   });
