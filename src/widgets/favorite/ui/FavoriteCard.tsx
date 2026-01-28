@@ -8,6 +8,7 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import ConfirmModal from "@/widgets/confirmModal/ui/ConfirmModal";
 import Card from "@/shared/ui/Card";
 import { CharacterCanvas } from "@/widgets/character";
+import FavoriteSkeleton from "./FavoriteSkeleton";
 
 interface Props {
   updateFavoriteItem: (favorite: Favorite) => void;
@@ -29,10 +30,11 @@ export default function FavoriteCard({
     useModifyFavoriteCard({ favorite });
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const { data: weatherData } = useSearchWeather({
+  const { data: weatherData, isFetching } = useSearchWeather({
     latitude: favorite.latitude,
     longitude: favorite.longitude,
     enabled: true,
+    hasPlaceholderData: false,
   });
 
   const handleUpdateFavoriteItem = (favorite: Favorite) => {
@@ -69,6 +71,10 @@ export default function FavoriteCard({
       replace: pathname ? true : false,
     });
   };
+
+  if (isFetching) {
+    return <FavoriteSkeleton />;
+  }
 
   return (
     <>
