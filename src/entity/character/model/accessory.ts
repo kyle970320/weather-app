@@ -14,7 +14,7 @@ export const addBeanie = (head: THREE.Mesh) => {
     Math.PI / 1.3,
   );
   const beanieMat = new THREE.MeshStandardMaterial({
-    color: 0xff6b35,
+    color: 0x2c94e,
     roughness: 0.9,
     metalness: 0.0,
   });
@@ -28,7 +28,7 @@ export const addBeanie = (head: THREE.Mesh) => {
   // 비니 접힌 부분 (테두리)
   const foldGeo = new THREE.TorusGeometry(0.58, 0.08, 8, 16);
   const foldMat = new THREE.MeshStandardMaterial({
-    color: 0xe85d24,
+    color: 0x2c94e,
     roughness: 0.9,
   });
 

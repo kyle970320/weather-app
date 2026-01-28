@@ -51,7 +51,7 @@ export const removeFavorite = (addressName: string): Favorite[] => {
 export const updateFavorite = (favorite: Favorite): Favorite[] => {
   const current = loadFavorites();
   const updated = current.map((item) =>
-    item.id === favorite.id ? favorite : item,
+    item.addressName === favorite.addressName ? favorite : item,
   );
   saveFavorites(updated);
   return updated;

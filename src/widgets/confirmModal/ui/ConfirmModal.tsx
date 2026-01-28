@@ -36,10 +36,10 @@ export default function ConfirmModal({
           <p className="text-foreground text-sm">{description}</p>
         </ModalBody>
         <ModalFooter>
-          <Button variant="primary" onClick={onConfirm}>
+          <Button className="py-3" variant="primary" onClick={onConfirm}>
             확인
           </Button>
-          <Button variant="common" onClick={onClose}>
+          <Button className="py-3" variant="common" onClick={onClose}>
             취소
           </Button>
         </ModalFooter>

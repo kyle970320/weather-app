@@ -6,15 +6,16 @@ interface Props {
 }
 export const useModifyFavoriteCard = ({ favorite }: Props) => {
   const [editingAddress, setEditingAddress] = useState<string | null>(null);
-  const [editName, setEditName] = useState(favorite.nickname);
+  const [editName, setEditName] = useState("");
   const isOpenEditMode = editingAddress === favorite.addressName;
   const onClickEdit = () => {
     setEditingAddress(favorite.addressName);
+    setEditName(favorite.nickname);
   };
 
   const onClickCancel = () => {
     setEditingAddress(null);
-    setEditName(favorite.nickname);
+    setEditName("");
   };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
