@@ -67,6 +67,7 @@ export default function useGetHome() {
     latitude: location?.latitude ?? null,
     longitude: location?.longitude ?? null,
     enabled: !!location,
+    hasPlaceholderData: false,
   });
 
   return {

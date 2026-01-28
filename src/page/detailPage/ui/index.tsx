@@ -8,9 +8,9 @@ export default function DetailPage() {
   const {
     weatherData,
     selectedLocation,
-    isWeatherLoading,
     weatherError,
     extraData,
+    isWeatherFetching,
   } = useGetDetail();
 
   const { isFavoriteItem, removeFavoriteItem, addFavoriteItem } =
@@ -36,7 +36,7 @@ export default function DetailPage() {
     });
   };
 
-  if (isWeatherLoading) {
+  if (isWeatherFetching) {
     return <WeatherSkeleton />;
   }
 
