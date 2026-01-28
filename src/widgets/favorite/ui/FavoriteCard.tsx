@@ -7,6 +7,7 @@ import { Input } from "@/shared/ui/Input";
 import { useRef, useState, type KeyboardEvent } from "react";
 import ConfirmModal from "@/widgets/confirmModal/ui/ConfirmModal";
 import Card from "@/shared/ui/Card";
+import { CharacterCanvas } from "@/widgets/character";
 
 interface Props {
   updateFavoriteItem: (favorite: Favorite) => void;
@@ -124,13 +125,22 @@ export default function FavoriteCard({
         </div>
         <div onClick={handleNavigateDetail}>
           <div className="text-sm opacity-80 mb-3">{favorite.addressName}</div>
-          <div className="flex flex-col items-end justify-end">
-            <div className="text-3xl sm:text-4xl font-light">
-              {weatherData?.currentTemperature}°
-            </div>
-            <div className="text-right">
-              <div className="text-sm sm:text-base">
-                {weatherData?.maxTemperature}° / {weatherData?.minTemperature}°
+          <div className="flex items-center justify-between gap-2">
+            <CharacterCanvas
+              ptyType={weatherData?.extraData?.ptyType}
+              currentTemperature={weatherData?.currentTemperature}
+              width={100}
+              height={100}
+            />
+            <div className="flex flex-col items-end justify-end">
+              <div className="text-3xl sm:text-4xl font-light">
+                {weatherData?.currentTemperature}°
+              </div>
+              <div className="text-right">
+                <div className="text-sm sm:text-base">
+                  {weatherData?.maxTemperature}° / {weatherData?.minTemperature}
+                  °
+                </div>
               </div>
             </div>
           </div>
