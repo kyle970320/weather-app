@@ -82,7 +82,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <Card className="bg-white/5 p-0 shadow-xl">
+        <Card className="bg-white/25 p-0 shadow-xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div className="rounded-xl p-3 text-center">
               <Wind className="w-5 h-5 mx-auto mb-1" />
@@ -106,7 +106,7 @@ export default function HomePage() {
           </div>
         </Card>
         {weatherData.hourlyTemperatures.length > 0 && (
-          <Card className="bg-white/5 shadow-xl">
+          <Card className="bg-white/25 shadow-xl">
             <h3 className="text-xl font-semibold mb-4">시간대별 기온</h3>
             <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
               {weatherData.hourlyTemperatures.map((hourly, index) => (

@@ -10,7 +10,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        "bg-white/20 backdrop-blur-md rounded-3xl p-6 text-white shadow-2xl w-full",
+        "bg-white/25 rounded-3xl p-6 text-white shadow-2xl w-full",
         className,
       )}
     >
