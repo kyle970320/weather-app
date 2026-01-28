@@ -1,7 +1,7 @@
 import Card from "@/shared/ui/Card";
 import { useGetDetail } from "../model/useGetDetail";
 import { WeatherSkeleton } from "@/widgets/weather/ui";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import type { Favorite } from "@/entity/favorite";
 import WeatherCard from "@/widgets/weather/ui/WeatherCard";
 export default function DetailPage() {
@@ -19,6 +19,9 @@ export default function DetailPage() {
       removeFavoriteItem: (addressName: string) => void;
       addFavoriteItem: (favorite: Favorite) => void;
     }>();
+
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const isFavorite = isFavoriteItem(selectedLocation?.addressName ?? "");
 
@@ -66,6 +69,7 @@ export default function DetailPage() {
 
   return (
     <WeatherCard
+      key={pathname}
       location={{
         latitude: selectedLocation?.latitude ?? 0,
         longitude: selectedLocation?.longitude ?? 0,

@@ -35,7 +35,6 @@ export const getWeather = async (
       },
     },
   );
-
   return convertWeatherResponse(response.data);
 };
 
@@ -55,66 +54,96 @@ const convertWeatherResponse = (
     : [body.items.item];
 
   const firstItem = items[0] as WeatherItem;
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const todayItems = items.filter(
-    (item) => item.fcstDate === today,
-  ) as WeatherItem[];
 
-  const todayTemps = todayItems
+  // 현재 시각 기준
+  const now = new Date();
+  const currentHour = now.getHours();
+
+  const tempItems = items
     .filter((item) => item.category === "TMP")
-    .map((item) => Number(item.fcstValue));
+    .sort(
+      (a, b) =>
+        a.fcstDate.localeCompare(b.fcstDate) ||
+        a.fcstTime.localeCompare(b.fcstTime),
+    );
 
+  // 3시간 간격 TMP map 생성
+  const hourlyTemperatures: { time: string; temperature: string }[] = [];
+
+  let prevDay = "";
+
+  tempItems.forEach((item) => {
+    const fcstHour = Number(item.fcstTime.slice(0, 2));
+
+    if (fcstHour % 3 !== 0) return;
+
+    if (item.fcstDate > firstItem.baseDate || fcstHour >= currentHour) {
+      const hourString = item.fcstTime.slice(0, 2).padStart(2, "0");
+      const dayString = item.fcstDate.slice(6); // 일
+
+      const time =
+        dayString !== prevDay ? `${dayString} ${hourString}` : hourString;
+
+      hourlyTemperatures.push({
+        time,
+        temperature: item.fcstValue,
+      });
+
+      prevDay = dayString;
+    }
+  });
+
+  const resultHourly = hourlyTemperatures.slice(0, 9);
+
+  if (resultHourly.length < 9) {
+    const nextDayItems = tempItems
+      .filter(
+        (item) =>
+          Number(item.fcstDate.slice(6)) > Number(firstItem.fcstDate.slice(6)),
+      )
+      .filter((item) => Number(item.fcstTime.slice(0, 2)) % 3 === 0);
+
+    for (const item of nextDayItems) {
+      if (resultHourly.length >= 9) break;
+      const hourString = item.fcstTime.slice(0, 2).padStart(2, "0");
+      const dayString = item.fcstDate.slice(6);
+      resultHourly.push({
+        time: `${dayString} ${hourString}`,
+        temperature: item.fcstValue,
+      });
+    }
+  }
+
+  // min/max TMP
+  const todayTemps = tempItems.map((item) => Number(item.fcstValue));
   const minTemperature = Math.min(...todayTemps).toString();
   const maxTemperature = Math.max(...todayTemps).toString();
 
-  // 시간대별 기온 (TMP) - 3시간 간격
-  const tempItems = todayItems
-    .filter((item) => item.category === "TMP")
-    .sort((a, b) => {
-      if (a.fcstTime !== b.fcstTime) {
-        return a.fcstTime.localeCompare(b.fcstTime);
-      }
-      return 0;
-    });
-
-  const hourlyTemperatures = tempItems.map((item) => ({
-    time: item.fcstTime.slice(0, 2),
-    temperature: item.fcstValue,
-  }));
-
-  // 현재 기온 (가장 가까운 시각의 TMP)
-  const now = new Date();
-  const currentHour = String(now.getHours()).padStart(2, "0");
-
+  // 현재 기온
   const currentTempItem = tempItems.find(
-    (item) => item.fcstTime.slice(0, 2) >= currentHour,
+    (item) => Number(item.fcstTime.slice(0, 2)) >= currentHour,
   );
-
-  // fallback 포함
-  const baseTime = currentTempItem?.fcstTime ?? tempItems[0]?.fcstTime ?? "";
-
   const currentTemperature =
     currentTempItem?.fcstValue || tempItems[0]?.fcstValue || "";
 
-  // 기타 카테고리별 데이터 (현재와 가장 가까운 시각 기준)
+  // 기타 데이터
+  const baseTime = currentTempItem?.fcstTime ?? tempItems[0]?.fcstTime ?? "";
   const data: Record<string, string> = {};
-
   if (baseTime) {
-    todayItems
-      .filter((item) => item.fcstTime === baseTime)
+    items
+      .filter(
+        (item) =>
+          item.fcstTime === baseTime &&
+          !["TMP", "TMX", "TMN"].includes(item.category),
+      )
       .forEach((item) => {
-        if (!["TMP", "TMX", "TMN"].includes(item.category)) {
-          const categoryMap: Record<string, string> = {
-            WSD: "windSpeed",
-            PTY: "precipitationType",
-            REH: "humidity",
-          };
-
-          const key = categoryMap[item.category];
-          if (key) {
-            data[key] = item.fcstValue;
-          }
-        }
+        const categoryMap: Record<string, string> = {
+          WSD: "windSpeed",
+          PTY: "precipitationType",
+          REH: "humidity",
+        };
+        const key = categoryMap[item.category];
+        if (key) data[key] = item.fcstValue;
       });
   }
 
@@ -126,7 +155,7 @@ const convertWeatherResponse = (
     maxTemperature,
     minTemperature,
     currentTemperature,
-    hourlyTemperatures,
+    hourlyTemperatures: resultHourly,
     extraData: data,
   };
 };
