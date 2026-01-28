@@ -40,6 +40,7 @@ export interface WeatherParams {
   pageNo?: number;
   dataType?: "XML" | "JSON";
   enabled?: boolean;
+  hasPlaceholderData?: boolean;
 }
 
 export interface HourlyTemperature {

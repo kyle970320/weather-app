@@ -1,8 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getWeather } from "../api";
-import type { WeatherParams } from "../types";
+import type { WeatherData, WeatherParams } from "../types";
 
 export const useGetWeatherQuery = (params: WeatherParams) => {
+  const placeholderData = params.hasPlaceholderData
+    ? keepPreviousData
+    : (null as unknown as WeatherData);
   return useQuery({
     queryKey: [
       "weather",
@@ -16,5 +19,6 @@ export const useGetWeatherQuery = (params: WeatherParams) => {
     enabled: params.enabled,
     staleTime: 1000 * 60 * 30,
     gcTime: 1000 * 60 * 60,
+    placeholderData: placeholderData,
   });
 };
