@@ -10,11 +10,11 @@ export const createRain = (paricles: THREE.Points[], world: THREE.Group) => {
   const velocities = new Float32Array(rainCount);
 
   for (let i = 0; i < rainCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 10; // x
-    positions[i * 3 + 1] = Math.random() * 15; // y
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 10; // z
+    positions[i * 3] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 1] = Math.random() * 15;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
 
-    velocities[i] = 0.08 + Math.random() * 0.12; // 비마다 속도 다르게
+    velocities[i] = 0.08 + Math.random() * 0.12;
   }
 
   const geometry = new THREE.BufferGeometry();
@@ -23,7 +23,7 @@ export const createRain = (paricles: THREE.Points[], world: THREE.Group) => {
 
   const material = new THREE.PointsMaterial({
     color: 0xfafdff,
-    size: 0.5,
+    size: 0.7,
     transparent: true,
     opacity: 0.8,
     depthWrite: false,

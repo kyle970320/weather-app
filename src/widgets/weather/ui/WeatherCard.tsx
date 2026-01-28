@@ -1,8 +1,21 @@
 import type { WeatherData } from "@/entity/weather";
 import Card from "@/shared/ui/Card";
-import { Star, Wind, Droplets, CloudRain } from "lucide-react";
+import {
+  Star,
+  Wind,
+  Droplets,
+  CloudRain,
+  Sun,
+  CloudRainWind,
+  Snowflake,
+  ThermometerSnowflake,
+  ThermometerSun,
+  Thermometer,
+} from "lucide-react";
 import { PTY_TYPE } from "../config/ptyType";
 import { CharacterCanvas } from "@/widgets/character";
+import { PTY_MODE, TEMP_MODE } from "../config/mode";
+import { useChangeWeatherMode } from "../model/useChangeWeatherMode";
 
 interface Props {
   location: {
@@ -22,10 +35,64 @@ export default function WeatherCard({
   isFavorite,
   handleAddFavorite,
 }: Props) {
+  const {
+    mode,
+    handleTempModeChange,
+    handlePtyModeChange,
+    getTempColor,
+    getPtyColor,
+  } = useChangeWeatherMode();
   return (
     <div className="mt-8 space-y-6">
       <Card className="relative flex flex-col items-center gap-6">
-        <div className="absolute top-5 right-5">
+        <div className="absolute top-5 right-5 flex flex-col-reverse items-center gap-2 z-10">
+          <div className="flex flex-col items-center">
+            <div>온도</div>
+            <div className="flex items-center gap-0.5">
+              <ThermometerSun
+                color={getTempColor(TEMP_MODE.hot)}
+                fill={getTempColor(TEMP_MODE.hot)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handleTempModeChange?.(TEMP_MODE.hot)}
+              />
+              <Thermometer
+                color={getTempColor(TEMP_MODE.common)}
+                fill={getTempColor(TEMP_MODE.common)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handleTempModeChange?.(TEMP_MODE.common)}
+              />
+              <ThermometerSnowflake
+                color={getTempColor(TEMP_MODE.cold)}
+                fill={getTempColor(TEMP_MODE.cold)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handleTempModeChange?.(TEMP_MODE.cold)}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div>날씨</div>
+            <div className="flex items-center gap-0.5">
+              <Sun
+                color={getPtyColor(PTY_MODE.common)}
+                fill={getPtyColor(PTY_MODE.common)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handlePtyModeChange?.(PTY_MODE.common)}
+              />
+              <CloudRainWind
+                color={getPtyColor(PTY_MODE.rain)}
+                fill={getPtyColor(PTY_MODE.rain)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handlePtyModeChange?.(PTY_MODE.rain)}
+              />
+              <Snowflake
+                color={getPtyColor(PTY_MODE.snow)}
+                fill={getPtyColor(PTY_MODE.snow)}
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => handlePtyModeChange?.(PTY_MODE.snow)}
+              />
+            </div>
+          </div>
+
           <Star
             className="w-5 h-5 cursor-pointer"
             onClick={handleAddFavorite}
@@ -35,8 +102,8 @@ export default function WeatherCard({
         </div>
         <div className="flex flex-col items-center">
           <CharacterCanvas
-            ptyType={extraData?.ptyType}
-            currentTemperature={weatherData?.currentTemperature}
+            ptyType={mode?.pty || extraData?.ptyType}
+            currentTemperature={mode?.temp || weatherData?.currentTemperature}
           />
           <h2 className="text-xl sm:text-2xl font-bold">
             {location?.addressName}
