@@ -4,9 +4,10 @@ import {
   createCharacterCommon,
   createCharacterCold,
   createCharacterWarm,
-} from "@/entity/character/model/character";
-import { setupLight } from "@/entity/character/model";
-import { HAIR_COLORS, SKIN_COLORS } from "@/entity/character";
+  setupLight,
+  HAIR_COLORS,
+  SKIN_COLORS,
+} from "@/entity/character";
 import { useGetParticle } from "./useGetParticle";
 
 interface Props {
@@ -170,7 +171,14 @@ export const useGetCharacter = ({
       renderer.forceContextLoss();
       currentMount.removeChild(renderer.domElement);
     };
-  }, [isCold, createCharacter, createBgParticles, updateBgParticles]);
+  }, [
+    canvasWidth,
+    canvasHeight,
+    isCold,
+    createCharacter,
+    createBgParticles,
+    updateBgParticles,
+  ]);
 
   return {
     mountRef,

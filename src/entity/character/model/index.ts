@@ -1,4 +1,8 @@
-export { createCharacterCommon, createCharacterCold } from "./character";
+export {
+  createCharacterCommon,
+  createCharacterCold,
+  createCharacterWarm,
+} from "./character";
 export { setupEar } from "./ear";
 export { setupEyeCommon, setupEyeCold } from "./eye";
 export { setupLight } from "./light";

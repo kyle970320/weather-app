@@ -5,7 +5,7 @@ import { useSearchWeather } from "@/feature/weather";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/shared/ui/Input";
 import { useRef, useState, type KeyboardEvent } from "react";
-import ConfirmModal from "@/widgets/confirmModal/ui/ConfirmModal";
+import { ConfirmModal } from "@/widgets/confirmModal";
 import Card from "@/shared/ui/Card";
 import { CharacterCanvas } from "@/widgets/character";
 import FavoriteSkeleton from "./FavoriteSkeleton";
