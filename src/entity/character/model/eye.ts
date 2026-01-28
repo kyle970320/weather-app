@@ -155,11 +155,9 @@ export const setupEyeCold = (faceGroup: THREE.Group) => {
   rightEyeWhite.receiveShadow = true;
 
   faceGroup.add(rightEyeWhite);
-  const pupilGeometry = new THREE.CapsuleGeometry(0.16, 0.1, 16);
-  const pupilMaterial = new THREE.MeshStandardMaterial({
+  const pupilGeometry = new THREE.CapsuleGeometry(0.16, 0.15, 16);
+  const pupilMaterial = new THREE.MeshBasicMaterial({
     color: 0x1a1a1a,
-    roughness: 0.15,
-    metalness: 0.0,
   });
 
   const leftPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
