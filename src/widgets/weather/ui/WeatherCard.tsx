@@ -1,6 +1,8 @@
 import type { WeatherData } from "@/entity/weather";
 import Card from "@/shared/ui/Card";
 import { Star, Wind, Droplets, CloudRain } from "lucide-react";
+import { PTY_TYPE } from "../config/ptyType";
+import { CharacterCanvas } from "@/widgets/character";
 
 interface Props {
   location: {
@@ -32,6 +34,10 @@ export default function WeatherCard({
           />
         </div>
         <div className="flex flex-col items-center">
+          <CharacterCanvas
+            ptyType={extraData?.ptyType}
+            currentTemperature={weatherData?.currentTemperature}
+          />
           <h2 className="text-xl sm:text-2xl font-bold">
             {location?.addressName}
           </h2>
@@ -66,9 +72,11 @@ export default function WeatherCard({
             </div>
             <div className="rounded-xl p-3 text-center">
               <CloudRain className="w-5 h-5 mx-auto mb-1" />
-              <div className="text-sm opacity-80">강수확률</div>
+              <div className="text-sm opacity-80">강수형태</div>
               <div className="text-sm sm:text-basefont-semibold">
-                {extraData?.rainfallProbability ?? 0}%
+                {PTY_TYPE[
+                  extraData?.precipitationType as keyof typeof PTY_TYPE
+                ] ?? "없음"}
               </div>
             </div>
           </div>

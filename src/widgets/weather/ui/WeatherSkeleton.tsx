@@ -23,7 +23,7 @@ export default function WeatherSkeleton() {
           </div>
         </div>
 
-        {/* 바람 / 습도 / 강수확률 */}
+        {/* 바람 / 습도 / 강수형태 */}
         <Card className="bg-white/5 p-0 shadow-xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {Array.from({ length: 3 }).map((_, i) => (
