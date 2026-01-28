@@ -15,11 +15,13 @@ export const useGetDetail = () => {
   const {
     data: weatherData,
     isLoading: isWeatherLoading,
+    isFetching: isWeatherFetching,
     error: weatherError,
   } = useSearchWeather({
     latitude: selectedLocation?.latitude ?? null,
     longitude: selectedLocation?.longitude ?? null,
     enabled: !!selectedLocation,
+    hasPlaceholderData: false,
   });
 
   //새로고침 or url 공유 대응
@@ -30,6 +32,7 @@ export const useGetDetail = () => {
   return {
     weatherData,
     isWeatherLoading,
+    isWeatherFetching,
     weatherError,
     selectedLocation,
     extraData: weatherData?.extraData,

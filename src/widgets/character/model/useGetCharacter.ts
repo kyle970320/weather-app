@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import {
   createCharacterCommon,
@@ -20,6 +20,8 @@ export const useGetCharacter = ({
   width = 160,
   height = 160,
 }: Props) => {
+  const [ready, setReady] = useState(false);
+  const readyRef = useRef(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<THREE.Points[]>([]);
   const canvasWidth = width;
@@ -54,7 +56,6 @@ export const useGetCharacter = ({
       } else if (ptyType === "2" || ptyType === "3") {
         return createRain(particlesRef.current, world);
       } else {
-        console.log("createMusicNotes");
         return createMusicNotes(particlesRef.current, world);
       }
     },
@@ -96,6 +97,7 @@ export const useGetCharacter = ({
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(canvasWidth, canvasHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x0b1220, 0);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     currentMount.appendChild(renderer.domElement);
@@ -152,6 +154,10 @@ export const useGetCharacter = ({
       character.rotation.x = shake * 0.05;
 
       renderer.render(scene, camera);
+      if (!readyRef.current) {
+        readyRef.current = true;
+        setReady(true);
+      }
     }
 
     createBgParticles(world);
@@ -162,9 +168,17 @@ export const useGetCharacter = ({
       renderer.dispose();
       currentMount.removeChild(renderer.domElement);
     };
-  }, [isCold, createBgParticles, updateBgParticles, ptyType]);
+  }, [
+    canvasWidth,
+    canvasHeight,
+    isCold,
+    createCharacter,
+    createBgParticles,
+    updateBgParticles,
+  ]);
 
   return {
     mountRef,
+    ready,
   };
 };

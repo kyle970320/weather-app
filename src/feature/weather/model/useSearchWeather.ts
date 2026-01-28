@@ -6,12 +6,14 @@ interface Props {
   latitude: number | null;
   longitude: number | null;
   enabled: boolean;
+  hasPlaceholderData?: boolean;
 }
 
 export const useSearchWeather = ({
   latitude,
   longitude,
   enabled = true,
+  hasPlaceholderData = true,
 }: Props) => {
   // 좌표를 기상청 격자 좌표로 변환
   const gridCoordinates = useMemo(() => {
@@ -25,17 +27,19 @@ export const useSearchWeather = ({
   const { base_date, base_time } = getCurrentBaseDateTime();
 
   // 날씨 쿼리
-  const { data, isLoading, error } = useGetWeatherQuery({
+  const { data, isLoading, error, isFetching } = useGetWeatherQuery({
     base_date,
     base_time,
     nx: gridCoordinates?.nx ?? 0,
     ny: gridCoordinates?.ny ?? 0,
     enabled,
+    hasPlaceholderData,
   });
 
   return {
     data,
     isLoading,
     error,
+    isFetching,
   };
 };
