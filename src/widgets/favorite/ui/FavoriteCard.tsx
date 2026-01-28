@@ -1,6 +1,6 @@
 import type { Favorite } from "@/entity/favorite";
 import { useModifyFavoriteCard } from "../model/useModifyFavoriteCard";
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Save, Trash2 } from "lucide-react";
 import { useSearchWeather } from "@/feature/weather";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/shared/ui/Input";
@@ -9,6 +9,7 @@ import { ConfirmModal } from "@/widgets/confirmModal";
 import Card from "@/shared/ui/Card";
 import { CharacterCanvas } from "@/widgets/character";
 import FavoriteSkeleton from "./FavoriteSkeleton";
+import { Snackbar } from "@minus-ui/core";
 
 interface Props {
   updateFavoriteItem: (favorite: Favorite) => void;
@@ -23,7 +24,7 @@ export default function FavoriteCard({
 }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const pathname = location.pathname.split("/").pop();
+  const pathname = decodeURIComponent(location.pathname).split("/").pop();
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   const { isOpenEditMode, editName, onChangeName, onClickEdit, onClickCancel } =
@@ -38,6 +39,13 @@ export default function FavoriteCard({
   });
 
   const handleUpdateFavoriteItem = (favorite: Favorite) => {
+    if (favorite.nickname.length < 1) {
+      Snackbar.show({
+        message: "닉네임을 입력해주세요",
+        type: "error",
+      });
+      return;
+    }
     updateFavoriteItem(favorite);
     onClickCancel();
   };
@@ -53,14 +61,6 @@ export default function FavoriteCard({
     }
     if (e.key === "Escape") {
       onClickCancel();
-    }
-  };
-
-  const handleToggleEditMode = () => {
-    if (isOpenEditMode) {
-      onClickCancel();
-    } else {
-      onClickEdit();
     }
   };
 
@@ -85,73 +85,93 @@ export default function FavoriteCard({
         onClose={() => setIsOpenConfirmModal(false)}
         onConfirm={() => handleRemoveFavoriteItem(favorite.addressName)}
       />
-      <Card
-        key={favorite.id}
-        className="p-4 bg-white/25 rounded-2xl text-white shadow-xl hover:shadow-2xl transition cursor-pointer"
-      >
-        <div className="flex h-15 items-center justify-between mb-3">
-          {isOpenEditMode ? (
-            <Input
-              ref={inputRef}
-              className="bg-white/20 rounded px-2 py-1 text-lg font-semibold outline-none w-full"
-              type="text"
-              autoFocus
-              maxLength={25}
-              value={editName}
-              onChange={onChangeName}
-              onKeyDown={handleKeyDown}
-              onClick={(e) => e.stopPropagation()}
-              onBlur={() =>
-                updateFavoriteItem({ ...favorite, nickname: editName })
-              }
-            />
-          ) : (
-            <h3 className="text-lg font-semibold ellipsis-2-line">
-              {favorite.nickname}
-            </h3>
-          )}
+      <div onClick={handleNavigateDetail}>
+        <Card
+          key={favorite.id}
+          className={
+            "p-4 bg-white/25 rounded-2xl text-white shadow-xl hover:shadow-2xl transition cursor-pointer"
+          }
+        >
+          <div className="flex h-15 items-center justify-between mb-3">
+            {isOpenEditMode ? (
+              <Input
+                ref={inputRef}
+                className="bg-white/20 rounded px-2 py-1 text-lg font-semibold outline-none w-full"
+                type="text"
+                autoFocus
+                maxLength={25}
+                value={editName}
+                onChange={onChangeName}
+                onKeyDown={handleKeyDown}
+                onClick={(e) => e.stopPropagation()}
+                onBlur={() => {
+                  handleUpdateFavoriteItem({ ...favorite, nickname: editName });
+                }}
+              />
+            ) : (
+              <h3 className="text-lg font-semibold ellipsis-2-line">
+                {favorite.nickname}
+              </h3>
+            )}
 
-          <div className="flex gap-1">
-            <button
-              onClick={handleToggleEditMode}
-              className="p-1 hover:bg-white/30 rounded transition"
-            >
-              <Edit2 className="w-4 h-4" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpenConfirmModal(true);
-              }}
-              className="p-1 hover:bg-white/30 rounded transition"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <div className="flex gap-1">
+              {isOpenEditMode ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className="p-1 sm:hover:bg-white/30 rounded transition"
+                >
+                  <Save className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickEdit();
+                  }}
+                  className="p-1 sm:hover:bg-white/30 rounded transition"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </button>
+              )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpenConfirmModal(true);
+                }}
+                className="p-1 hover:bg-white/30 rounded transition"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        </div>
-        <div onClick={handleNavigateDetail}>
-          <div className="text-sm opacity-80 mb-3">{favorite.addressName}</div>
-          <div className="flex items-center justify-between gap-2">
-            <CharacterCanvas
-              ptyType={weatherData?.extraData?.ptyType}
-              currentTemperature={weatherData?.currentTemperature}
-              width={100}
-              height={100}
-            />
-            <div className="flex flex-col items-end justify-end">
-              <div className="text-3xl sm:text-4xl font-light">
-                {weatherData?.currentTemperature}°
-              </div>
-              <div className="text-right">
-                <div className="text-sm sm:text-base">
-                  {weatherData?.maxTemperature}° / {weatherData?.minTemperature}
-                  °
+          <div>
+            <div className="text-sm opacity-80 mb-3">
+              {favorite.addressName}
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <CharacterCanvas
+                ptyType={weatherData?.extraData?.ptyType}
+                currentTemperature={weatherData?.currentTemperature}
+                width={100}
+                height={100}
+              />
+              <div className="flex flex-col items-end justify-end">
+                <div className="text-3xl sm:text-4xl font-light">
+                  {weatherData?.currentTemperature}°
+                </div>
+                <div className="text-right">
+                  <div className="text-sm sm:text-base">
+                    {weatherData?.maxTemperature}° /{" "}
+                    {weatherData?.minTemperature}°
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </>
   );
 }
