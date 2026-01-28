@@ -85,28 +85,35 @@ const convertWeatherResponse = (
   // 현재 기온 (가장 가까운 시각의 TMP)
   const now = new Date();
   const currentHour = String(now.getHours()).padStart(2, "0");
+
   const currentTempItem = tempItems.find(
     (item) => item.fcstTime.slice(0, 2) >= currentHour,
   );
+
+  // fallback 포함
+  const baseTime = currentTempItem?.fcstTime ?? tempItems[0]?.fcstTime ?? "";
+
   const currentTemperature =
     currentTempItem?.fcstValue || tempItems[0]?.fcstValue || "";
 
-  // 기타 카테고리별 데이터 (첫 번째 시간대 기준)
+  // 기타 카테고리별 데이터 (현재와 가장 가까운 시각 기준)
   const data: Record<string, string> = {};
-  const firstTimeItem = todayItems.find(
-    (item) => item.fcstTime === tempItems[0]?.fcstTime,
-  );
-  if (firstTimeItem) {
+
+  if (baseTime) {
     todayItems
-      .filter((item) => item.fcstTime === firstTimeItem.fcstTime)
+      .filter((item) => item.fcstTime === baseTime)
       .forEach((item) => {
         if (!["TMP", "TMX", "TMN"].includes(item.category)) {
           const categoryMap: Record<string, string> = {
             WSD: "windSpeed",
-            POP: "rainfallProbability",
+            PTY: "precipitationType",
             REH: "humidity",
           };
-          data[categoryMap[item.category]] = item.fcstValue;
+
+          const key = categoryMap[item.category];
+          if (key) {
+            data[key] = item.fcstValue;
+          }
         }
       });
   }

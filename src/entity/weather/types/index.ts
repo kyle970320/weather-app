@@ -59,10 +59,10 @@ export interface HourlyTemperature {
  * currentTemperature: 현재 기온
  * hourlyTemperatures: 시간대별 기온
  * data: 기타 카테고리별 데이터
- * 기타 카테고리: REH, WSD, POP
+ * 기타 카테고리: REH, WSD, PTY
  * - REH: 습도 (%)
  * - WSD: 풍속 (m/s)
- * - POP: 강수확률 (%)
+ * - PTY: 강수형태 (0: 없음, 1: 비, 2: 비/눈, 3: 눈, 4: 소나기)
  */
 export interface WeatherData {
   baseDate: string;
