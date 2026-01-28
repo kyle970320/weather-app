@@ -21,6 +21,7 @@ export const useGetCharacter = ({
   height = 160,
 }: Props) => {
   const [ready, setReady] = useState(false);
+  const readyRef = useRef(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<THREE.Points[]>([]);
   const canvasWidth = width;
@@ -153,7 +154,10 @@ export const useGetCharacter = ({
       character.rotation.x = shake * 0.05;
 
       renderer.render(scene, camera);
-      setReady(true);
+      if (!readyRef.current) {
+        readyRef.current = true;
+        setReady(true);
+      }
     }
 
     createBgParticles(world);
@@ -164,7 +168,14 @@ export const useGetCharacter = ({
       renderer.dispose();
       currentMount.removeChild(renderer.domElement);
     };
-  }, [isCold, createBgParticles, updateBgParticles, ptyType]);
+  }, [
+    canvasWidth,
+    canvasHeight,
+    isCold,
+    createCharacter,
+    createBgParticles,
+    updateBgParticles,
+  ]);
 
   return {
     mountRef,
