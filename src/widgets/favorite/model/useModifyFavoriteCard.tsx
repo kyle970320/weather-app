@@ -8,7 +8,6 @@ export const useModifyFavoriteCard = ({ favorite }: Props) => {
   const [editingAddress, setEditingAddress] = useState<string | null>(null);
   const [editName, setEditName] = useState(favorite.nickname);
   const isOpenEditMode = editingAddress === favorite.addressName;
-
   const onClickEdit = () => {
     setEditingAddress(favorite.addressName);
   };
